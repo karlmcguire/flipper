@@ -1,10 +1,13 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import Nav from './Nav.js'
+import './App.css'
 
-function App() {
+const App = () => {
   return (
-    <h1>Hello world!</h1> 
-  );
+    <div>
+      <Nav />
+    </div>
+  )
 }
 
-export default App;
+export default App
