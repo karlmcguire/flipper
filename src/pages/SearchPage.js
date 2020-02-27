@@ -5,7 +5,7 @@ const SearchPage = () => {
   return (
     <div>
       <Nav />
-      <div className="center">
+      <div className="center--main">
         <h1>search</h1>
       </div>
     </div>

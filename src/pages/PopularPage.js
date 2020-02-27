@@ -5,7 +5,7 @@ const PopularPage = () => {
   return (
     <div>
       <Nav />
-      <div className="center">
+      <div className="center--main">
         <h1>popular</h1>
       </div>
     </div>

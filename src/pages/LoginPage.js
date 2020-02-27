@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <div>
       <Nav />
-      <div className="center">
+      <div className="center--main">
         <h1>login</h1>
       </div>
     </div>

@@ -5,7 +5,7 @@ const RecentPage = () => {
   return (
     <div>
       <Nav />
-      <div className="center">
+      <div className="center--main">
         <h1>recent</h1>
       </div>
     </div>

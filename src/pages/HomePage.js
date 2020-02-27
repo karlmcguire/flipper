@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <div>
       <Nav />
-      <div className="center">
+      <div className="center--main">
         <h1>home</h1>
       </div>
     </div>
