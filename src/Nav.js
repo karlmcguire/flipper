@@ -8,16 +8,16 @@ function Nav(props) {
     <nav>
       <div className='center'>
         <div className="logo">
-          <Link to="/">
+          <Link to="/flipper">
             <Logo />
             <h1 className="logo__text">FLIPPER</h1>
           </Link>
         </div>
         <div className="links">
-          <Link to="/search">Search</Link>
-          <Link to="/popular">Popular</Link>
-          <Link to="/recent">Recent</Link>
-          <Link to="/login">Login</Link>
+          <Link to="/flipper/search">Search</Link>
+          <Link to="/flipper/popular">Popular</Link>
+          <Link to="/flipper/recent">Recent</Link>
+          <Link to="/flipper/login">Login</Link>
         </div>
       </div>
     </nav>

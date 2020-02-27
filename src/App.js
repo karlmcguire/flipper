@@ -10,11 +10,11 @@ import './App.css'
 const App = () => {
   return (
     <Switch>
-      <Route exact path="/" component={HomePage} />
-      <Route path="/search" component={SearchPage} />
-      <Route path="/popular" component={PopularPage} />
-      <Route path="/recent" component={RecentPage} />
-      <Route path="/login" component={LoginPage} />
+      <Route exact path="/flipper" component={HomePage} />
+      <Route path="/flipper/search" component={SearchPage} />
+      <Route path="/flipper/popular" component={PopularPage} />
+      <Route path="/flipper/recent" component={RecentPage} />
+      <Route path="/flipper/login" component={LoginPage} />
     </Switch>
   )
 }
