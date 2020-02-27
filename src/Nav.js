@@ -1,20 +1,23 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Logo from './Logo.js'
 import './Nav.css'
 
-function Nav() {
+function Nav(props) {
   return (
     <nav>
       <div className='center'>
         <div className="logo">
-          <Logo />
-          <h1 className="logo__text">FLIPPER</h1>
+          <Link to="/">
+            <Logo />
+            <h1 className="logo__text">FLIPPER</h1>
+          </Link>
         </div>
         <div className="links">
-          <a href="#">Search</a> 
-          <a href="#">Popular</a> 
-          <a href="#">Recent</a> 
-          <a href="#">Login</a> 
+          <Link to="/search">Search</Link>
+          <Link to="/popular">Popular</Link>
+          <Link to="/recent">Recent</Link>
+          <Link to="/login">Login</Link>
         </div>
       </div>
     </nav>

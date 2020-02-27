@@ -1,12 +1,21 @@
 import React from 'react'
-import Nav from './Nav.js'
+import { Route, Switch } from 'react-router-dom'
+import HomePage from './pages/HomePage.js'
+import SearchPage from './pages/SearchPage.js'
+import PopularPage from './pages/PopularPage.js'
+import RecentPage from './pages/RecentPage.js'
+import LoginPage from './pages/LoginPage.js'
 import './App.css'
 
 const App = () => {
   return (
-    <div>
-      <Nav />
-    </div>
+    <Switch>
+      <Route exact path="/" component={HomePage} />
+      <Route path="/search" component={SearchPage} />
+      <Route path="/popular" component={PopularPage} />
+      <Route path="/recent" component={RecentPage} />
+      <Route path="/login" component={LoginPage} />
+    </Switch>
   )
 }
 

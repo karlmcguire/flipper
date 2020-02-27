@@ -9,12 +9,15 @@ nav {
   }
 
 .logo {
-  display: flex;
-  align-items: center;
-  height: 4rem;
-  line-height: 4rem;
-  padding: 0 1rem;
 }
+  .logo > a {
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    line-height: 4rem;
+    text-decoration: none;
+  }
   .logo:hover {
     background-color: #e4e4e4;
     cursor: pointer;
