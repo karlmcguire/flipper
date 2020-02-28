@@ -48,6 +48,29 @@ class SearchBar extends React.Component {
   }
 }
 
+const items = [1, 2, 3, 4, 5, 6, 7, 8]
+
+class SearchList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+
+    this.items = items.map((item) =>
+      <li key={item.toString()}>
+        {item}
+      </li>
+    )
+  }
+
+  render() {
+    return (
+      <ul>
+        {this.items} 
+      </ul>
+    )
+  }
+}
+
 const SearchPage = () => {
   return (
     <div>
@@ -55,6 +78,7 @@ const SearchPage = () => {
       <div className="center--main">
         <h1 className="title">Search</h1>
         <SearchBar />
+        <SearchList />
       </div>
     </div>
   )
