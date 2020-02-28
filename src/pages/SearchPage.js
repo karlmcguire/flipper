@@ -1,6 +1,5 @@
 import React from 'react'
-import Nav from '../Nav.js'
-import './SearchPage.css'
+import Header from '../Header.js'
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -26,9 +25,8 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <form className="search" onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}>
         <input 
-          className="search__bar" 
           type="text" 
           placeholder="Item name..." 
           spellCheck="false" 
@@ -38,7 +36,6 @@ class SearchBar extends React.Component {
           ref={(input) => {this.input = input}}
         />
         <input 
-          className="search__btn" 
           type="submit"
           value="Search"
           tabIndex="2"
@@ -50,7 +47,7 @@ class SearchBar extends React.Component {
 
 const items = [1, 2, 3, 4, 5, 6, 7, 8]
 
-class SearchList extends React.Component {
+class SearchItems extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -64,9 +61,11 @@ class SearchList extends React.Component {
 
   render() {
     return (
-      <ul>
-        {this.items} 
-      </ul>
+      <div>
+        <ul>
+          {this.items} 
+        </ul>
+      </div>
     )
   }
 }
@@ -74,11 +73,11 @@ class SearchList extends React.Component {
 const SearchPage = () => {
   return (
     <div>
-      <Nav />
-      <div className="center--main">
-        <h1 className="title">Search</h1>
+      <Header />
+      <div>
+        <h1>Search</h1>
         <SearchBar />
-        <SearchList />
+        <SearchItems />
       </div>
     </div>
   )
