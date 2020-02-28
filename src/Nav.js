@@ -10,7 +10,7 @@ function Nav(props) {
         <div className="logo">
           <Link to="/flipper">
             <Logo />
-            <h1 className="logo__text">Flipper</h1>
+            <h1 className="logo__text">FLIPPER</h1>
           </Link>
         </div>
         <div className="links">

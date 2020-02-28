@@ -6,7 +6,7 @@ const RecentPage = () => {
     <div>
       <Nav />
       <div className="center--main">
-        <h1>recent</h1>
+        <h1 className="title">Recent</h1>
       </div>
     </div>
   )

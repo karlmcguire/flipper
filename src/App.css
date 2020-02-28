@@ -1,8 +1,15 @@
 .center {
-  max-width: 1000px;
+  max-width: 900px;
   margin: auto;
 }
   .center--main {
-    max-width: 950px;
+    max-width: 870px;
     margin: auto;
   }
+
+.title {
+  color: #333;
+  text-align: center;
+  margin-top: 3rem;
+  font-weight: 300;
+}
