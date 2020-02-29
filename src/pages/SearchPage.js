@@ -1,86 +1,51 @@
 import React from 'react'
+
+import { Redirect } from 'react-router-dom'
 import Header from '../Header.js'
+import Item from '../Item.js'
+import { ItemsFilter } from './ItemsPage.js'
 
-class SearchBar extends React.Component {
+import Jumbotron from 'react-bootstrap/Jumbotron'
+import Container from 'react-bootstrap/Container'
+
+class SearchPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {value: ''};
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.state = {
+      query: props.match.params.query 
+    }
   }
 
-  componentDidMount() {
-    this.input.focus() 
-  }
-
-  handleChange(event) {
-    this.setState({value: event.target.value})
-  }
-
-  handleSubmit(event) {
-    event.preventDefault()
-    alert(this.state.value)
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input 
-          type="text" 
-          placeholder="Item name..." 
-          spellCheck="false" 
-          tabIndex="1"
-          value={this.state.value}
-          onChange={this.handleChange}
-          ref={(input) => {this.input = input}}
-        />
-        <input 
-          type="submit"
-          value="Search"
-          tabIndex="2"
-        />
-      </form>
-    )
-  }
-}
-
-const items = [1, 2, 3, 4, 5, 6, 7, 8]
-
-class SearchItems extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-
-    this.items = items.map((item) =>
-      <li key={item.toString()}>
-        {item}
-      </li>
-    )
+  componentWillReceiveProps(props) {
+    if(props.match.params.query != this.state.query) {
+      this.state.query = props.match.params.query
+    }
   }
 
   render() {
     return (
       <div>
-        <ul>
-          {this.items} 
-        </ul>
-      </div>
+        <Header />
+        <div style={{height: 54, display: "block"}}></div>
+        <Jumbotron>
+          <Container>
+            <h1>Search: <strong>{this.state.query}</strong></h1>
+          </Container>
+        </Jumbotron>
+        <Container>
+          <ItemsFilter />
+          <hr />
+          <div className="d-flex justify-content-between flex-wrap align-self-baseline mt-2">
+            <Item 
+              img="https://m.media-amazon.com/images/I/414qZka1eqL._AC_UL640_FMwebp_QL65_.jpg" 
+              title="3M 8210 N95 Particulate Respirator Mask, 1- Box Of 20 MASKS"
+              text="$249.79"
+            /> 
+          </div>
+        </Container>
+      </div> 
     )
   }
-}
-
-const SearchPage = () => {
-  return (
-    <div>
-      <Header />
-      <div>
-        <h1>Search</h1>
-        <SearchBar />
-        <SearchItems />
-      </div>
-    </div>
-  )
 }
 
 export default SearchPage

@@ -2237,6 +2237,7 @@ chardet@^0.7.0:
 chart.js@^2.9.3:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
+  integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
@@ -7274,9 +7275,10 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
-react-bootstrap@^1.0.0-beta.16:
+react-bootstrap@^1.0.0-beta.17:
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-1.0.0-beta.17.tgz#09d4789633b2fb24d408fa493b4a80a496e87c82"
+  integrity sha512-7VP9doezV4rX0EcajzMvyD6ywtrLfulF3ZAev+uTx8syWQybUkccOpecUO5kPomng/bJMgK/h+44PkZ15Dv44g==
   dependencies:
     "@babel/runtime" "^7.4.2"
     "@restart/context" "^2.1.4"
@@ -7296,6 +7298,7 @@ react-bootstrap@^1.0.0-beta.16:
 react-chartkick@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/react-chartkick/-/react-chartkick-0.4.0.tgz#1de94397a44df65ccd52668eadc0ddafc7c436b8"
+  integrity sha512-X3TDaO/UfPfanxuZuraPVPYdTSNaDVrjn6lucrFES8DxtdYvcDT2svTtaKzuGyhIXVl1s1LEyDS5x5Xo1XMQJg==
   dependencies:
     chartkick "^3.2.0"
 
