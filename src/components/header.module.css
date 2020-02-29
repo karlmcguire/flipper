@@ -1,0 +1,16 @@
+.brand {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+  color: #fff;
+  background-color: #ffffff1a;
+  height: 48px;
+}
+  .input:focus {
+    box-shadow: 0 0 0 3px #ffffff40;
+  }
