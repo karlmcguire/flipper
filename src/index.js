@@ -1,18 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+"use strict"
 
-import 'bootstrap/dist/css/bootstrap.min.css'
+import Navbar from "./components/navbar"
+import Footer from "./components/footer"
 
-ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-, document.getElementById('root'));
+import Home from "./pages/home"
+import About from "./pages/about"
+import Contact from "./pages/contact"
+import Signup from "./pages/signup"
+import Login from "./pages/login"
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+m.route(document.body, "/", {
+  "/": {view: () => m("div", [
+    m(Navbar), 
+    m(Home),
+    m(Footer)
+  ])},
+  "/about": {view: () => m("div", [
+    m(Navbar, {active: "about"}), 
+    m(About),
+    m(Footer)
+  ])},
+  "/contact": {view: () => m("div", [
+    m(Navbar, {active: "contact"}), 
+    m(Contact),
+    m(Footer)
+  ])},
+  "/signup": {view: () => m("div", [
+    m(Navbar, {active: "signup"}),
+    m(Signup),
+    m(Footer)
+  ])},
+  "/login": {view: () => m("div", [
+    m(Navbar, {active: "login"}),
+    m(Login),
+    m(Footer)
+  ])}
+})
