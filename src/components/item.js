@@ -1,9 +1,13 @@
 export default {
   view: () => m(".column.is-one-fourth", m(".card", [
-    m("header.card-header", m("p.card-header-title", m("div", {
+    m("a.header.card-header", {
+      "href": "/#!/view/stuff", 
+    }, m("p.card-header-title", m("div", {
       "style": "max-height:3rem;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;",  
     }, "New Apple MacBook Pro (13-inch, 8GB RAM, 128GB Storage) - Space Gray"))),
-    m(".card-image", m("figure.image.is-4by4", {
+    m("a.card-image", {
+      "href": "/#!/view/stuff", 
+    }, m("figure.image.is-4by4", {
       "style": "padding:2rem;padding-bottom:0;margin-bottom:-1rem;", 
     }, m("img", {
       "src": "https://m.media-amazon.com/images/I/71IQiviMzWL._AC_UY436_FMwebp_QL65_.jpg",

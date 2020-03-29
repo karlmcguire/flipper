@@ -8,6 +8,7 @@ import About from "./pages/about"
 import Contact from "./pages/contact"
 import Signup from "./pages/signup"
 import Login from "./pages/login"
+import View from "./pages/view"
 
 m.route(document.body, "/", {
   "/": {view: () => m("div", [
@@ -33,6 +34,11 @@ m.route(document.body, "/", {
   "/login": {view: () => m("div", [
     m(Navbar, {active: "login"}),
     m(Login),
+    m(Footer)
+  ])},
+  "/view/:id": {view: (vnode) => m("div", [
+    m(Navbar),
+    m(View, {id: vnode.attrs.id}),
     m(Footer)
   ])}
 })

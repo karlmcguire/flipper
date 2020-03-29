@@ -5,7 +5,7 @@ export default () => {
       m(".columns", [
         m(".column"),
         m(".column.is-four-fifths", [
-          m(".notification.is-info" + (notification ? "" : ".is-hidden"), [
+          m(".notification.is-info.has-text-weight-semibold" + (notification ? "" : ".is-hidden"), [
             m("button.delete", {onclick: () => notification = false}),
             m("span", "We love to hear from you! Please use this form to send us any questions, concerns, or suggestions you may have. We'll be sure to respond as quickly as possible.")
           ]),
