@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/karlmcguire/flipper/issues"
   },
-  "homepage": "https://github.com/karlmcguire/flipper#readme"
+  "homepage": "https://github.com/karlmcguire/flipper#readme",
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  }
 }
