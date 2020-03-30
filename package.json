@@ -1,46 +1,20 @@
 {
-  "homepage": "https://flipper.deals",
   "name": "flipper",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "bootstrap": "^4.4.1",
-    "chart.js": "^2.9.3",
-    "react": "^16.13.0",
-    "react-bootstrap": "^1.0.0-beta.17",
-    "react-chartkick": "^0.4.0",
-    "react-dom": "^16.13.0",
-    "react-icons": "^3.9.0",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
-  },
+  "version": "1.0.0",
+  "description": "flipper.deals frontend",
+  "main": "src/index.js",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "rm -f ./docs/* && parcel build --no-source-maps ./src/index.html -d ./docs/",
+    "serve": "rm -f ./tmp/* && parcel serve -d ./tmp/ ./src/index.html"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/karlmcguire/flipper.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "author": "Karl McGuire",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/karlmcguire/flipper/issues"
   },
-  "devDependencies": {
-    "gh-pages": "^2.2.0"
-  }
+  "homepage": "https://github.com/karlmcguire/flipper#readme"
 }
