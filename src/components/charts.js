@@ -3,49 +3,67 @@ export default () => {
     view: (vnode) => m(".box", [
       m(".tabs.is-boxed", m("ul", [
         m("li.is-active", m.trust("<a><span>Price</span></a>")), 
-        m("li", m.trust("<a><span>Historical</span></a>")), 
-        m("li", m.trust("<a><span>Something</span></a>")), 
+        m("li", m.trust("<a>Shipping</a>")), 
+        m("li", m.trust("<a>Reviews</a>")), 
       ])),
       m("canvas", {
         oncreate: (vnode) => {
           new Chart(vnode.dom.getContext("2d"), {
             type: 'line',
             data: {
-              labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+              labels: ["Oct", "Nov", "Dec", "Jan", "Feb"],
               datasets: [{ 
-                  data: [86,114,106,106,107,111,133,221,783,2478],
-                  label: "Africa",
+                  data: [86,114,106,106,107],
+                  label: "Amazon",
                   borderColor: "#3e95cd",
                   fill: false
                 }, { 
-                  data: [282,350,411,502,635,809,947,1402,3700,5267],
-                  label: "Asia",
+                  data: [282,350,411,502,635],
+                  label: "Ebay",
                   borderColor: "#8e5ea2",
                   fill: false
                 }, { 
-                  data: [168,170,178,190,203,276,408,547,675,734],
-                  label: "Europe",
+                  data: [168,170,178,190,203],
+                  label: "Alibaba",
                   borderColor: "#3cba9f",
                   fill: false
-                }, { 
-                  data: [40,20,10,16,24,38,74,167,508,784],
-                  label: "Latin America",
-                  borderColor: "#e8c3b9",
-                  fill: false
-                }, { 
-                  data: [6,3,2,2,7,26,82,172,312,433],
-                  label: "North America",
-                  borderColor: "#c45850",
-                  fill: false
-                }
+                },
               ]
             },
             options: {
-              title: {
-                display: true,
-                text: 'World population per region (in millions)'
-              }
-            }
+              tooltips: {
+                titleFontSize: 16,
+                bodyFontSize: 14,
+                callbacks: {
+                  label: (tooltipItems, data) => {
+                    return "$" + tooltipItems.yLabel
+                  },
+                },
+              },
+              legend: {
+                position: "right",
+                labels: {
+                  fontSize: 16
+                }
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    fontSize: 16,
+                    callback: (value, index, values) => {
+                      return "$" + value
+                    },
+                  }
+                }],
+                xAxes: [{
+                  ticks: {
+                    fontSize: 16
+                  }
+                }]
+              },
+              responsive: true,
+              maintainAspectRatio: true
+            },
           }) 
         }
       })

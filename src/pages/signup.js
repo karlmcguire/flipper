@@ -41,7 +41,7 @@ export default {
         ]),
         m(".field.is-grouped.is-grouped-right", [
           m(".control", m("button.button.is-primary", m("strong", "Sign up"))),
-          m(".control", m("button.button.is-danger.is-light", {
+          m(".control", m("a.button.is-danger.is-light", {
             "href": "/#!/"}, "Cancel")),
         ])
       ]) 
