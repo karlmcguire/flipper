@@ -6,7 +6,7 @@ from selectorlib import Extractor
 import json
 
 
-e = Extractor.from_yaml_file("amazon.txt")
+e = Extractor.from_yaml_file("amazon.yml")
 
 url = "https://www.amazon.com/Rolex-Datejust-Mechanical-Automatic-Certified/dp/B015MXYTAQ/"
 
