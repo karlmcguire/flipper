@@ -3,7 +3,6 @@ export default () => {
     view: (vnode) => m(".box", [
       m(".tabs.is-boxed", m("ul", [
         m("li.is-active", m.trust("<a><span>Price</span></a>")), 
-        m("li", m.trust("<a>Shipping</a>")), 
         m("li", m.trust("<a>Reviews</a>")), 
       ])),
       m("canvas", {
@@ -15,17 +14,17 @@ export default () => {
               datasets: [{ 
                   data: [86,114,106,106,107],
                   label: "Amazon",
-                  borderColor: "#3e95cd",
+                  borderColor: "hsl(48, 100%, 67%)",
                   fill: false
                 }, { 
                   data: [282,350,411,502,635],
                   label: "Ebay",
-                  borderColor: "#8e5ea2",
+                  borderColor: "hsl(348, 100%, 61%)",
                   fill: false
                 }, { 
                   data: [168,170,178,190,203],
                   label: "Alibaba",
-                  borderColor: "#3cba9f",
+                  borderColor: "hsl(204, 86%, 53%)",
                   fill: false
                 },
               ]
