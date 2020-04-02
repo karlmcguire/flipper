@@ -1,12 +1,25 @@
-import Charts from "../components/charts"
+import Price from "../components/price"
+import Details from "../components/details"
 
 export default () => {
   return {
-    view: (vnode) => m(".container.section", m(".columns", [
-      m(".column.is-one-third", m(".panel", [
-        m("p.panel-heading", "Item"),
-      ])),
-      m(".column.is-two-thirds", m(Charts)),
-    ]))
+    view: (vnode) => m(".container.section", [
+      m(".columns", [
+        m(".column.is-one-half", m(".box", [
+          m("br"),
+          m("br"),
+          m("br"),
+          m("br"),
+        ])),
+        m(".column.is-one-half", m(".box", [
+          m("br"),
+          m("br"),
+          m("br"),
+          m("br"),
+        ]))
+      ]),
+      m(Price),
+      m(Details),
+    ])
   }
 }

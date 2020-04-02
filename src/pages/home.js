@@ -25,7 +25,13 @@ const menu = {
 
 const items = {
   view: () => m(".columns.is-multiline", [
-    m(Item),
+    m(Item, {
+      id: "stuff",
+      name: "name",
+      price: "399.99",
+      lastPrice: "499.99",
+      img: "https://i.imgur.com/wAgpEhJ.png",
+    }),
     m(Item),
     m(Item),
     m(Item),

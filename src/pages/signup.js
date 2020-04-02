@@ -22,7 +22,7 @@ export default () => {
           m("button.delete", {
             onclick: () => showTerms = false, 
           }),
-          m.trust(`Please accept the terms and conditions before continuing.`)
+          m.trust(`Please accept the terms and conditions.`)
         ]),
         m(".card", [
           m(".card-content", [

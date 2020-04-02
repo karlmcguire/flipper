@@ -1,16 +1,30 @@
 export default () => {
+  let chart;
   return {
     view: (vnode) => m(".box", [
       m(".tabs.is-boxed", m("ul", [
-        m("li.is-active", m.trust("<a><span>Price</span></a>")), 
-        m("li", m.trust("<a>Reviews</a>")), 
+        m("li.is-active", m("a", "Chart")),
+        m("li", m("a", "Table")),
       ])),
       m("canvas", {
         oncreate: (vnode) => {
-          new Chart(vnode.dom.getContext("2d"), {
+          chart = new Chart(vnode.dom.getContext("2d"), {
             type: 'line',
             data: {
-              labels: ["Oct", "Nov", "Dec", "Jan", "Feb"],
+              labels: [
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct", 
+                "Nov", 
+                "Dec", 
+                "Jan", 
+                "Feb",
+                "Mar",
+              ],
               datasets: [{ 
                   data: [86,114,106,106,107],
                   label: "Amazon",
