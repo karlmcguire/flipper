@@ -1,3 +1,4 @@
+import Items from "../model/items"
 import Item from "../components/item"
 
 const menu = {
@@ -23,25 +24,12 @@ const menu = {
   ])
 }
 
-const items = {
-  view: () => m(".columns.is-multiline", [
-    m(Item, {
-      id: "stuff",
-      name: "name",
-      price: "399.99",
-      lastPrice: "499.99",
-      img: "https://i.imgur.com/wAgpEhJ.png",
-    }),
-    m(Item),
-    m(Item),
-    m(Item),
-  ])
-}
-
 export default {
   view: () => m(".container.section", [
     m(menu),
     m("br"),
-    m(items)
+    m(".columns.is-multiline", 
+      Array.from(Items).map(([key, val]) => m(Item, val)),
+    )
   ])
 }
