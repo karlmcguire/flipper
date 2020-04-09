@@ -9,10 +9,14 @@ import pytesseract
 from re import sub
 import sys
 
-if len(sys.argv) is 1:
+# set this to the location of your tesseract-ocr binary (depends on os)
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract-ocr"
+
+if len(sys.argv) == 1:
     print("specify filename")
     sys.exit()
 
+# for debugging purposes
 pp = pprint.PrettyPrinter(indent=1)
 
 r = png.Reader(file=open(sys.argv[1], "rb"))
@@ -78,7 +82,7 @@ def getLabels(rows):
         text = sub("\D", "", text)
         # some labels will be too hard to read, but that should be acceptable
         # if we can infer pixel position based on the other labels (linearly)
-        if text is not "": 
+        if text != "": 
             labels.append((row, int(text)))
     return labels
 
