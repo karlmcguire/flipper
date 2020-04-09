@@ -8,9 +8,10 @@ from PIL import Image
 import pytesseract
 from re import sub
 import sys
+from scipy import stats
 
 # set this to the location of your tesseract-ocr binary (depends on os)
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract-ocr"
+pytesseract.pytesseract.tesseract_cmd = "/usr/local/bin/tesseract"
 
 if len(sys.argv) == 1:
     print("specify filename")
@@ -29,13 +30,11 @@ h = i[1]
 # raw pixel data
 d = i[2]
 
-print("creating pixel array...")
 # convert pixels to numpy array
 a = np.vstack(list(d))
 # convert 2d array to 3d: [[[r, g, b, a], ...]]
 p = np.reshape(a, (h, w, 4))
 
-print("finding bottom...")
 # find the bottom x-axis line of the graph
 yBottom = 0
 darkest = sys.maxsize
@@ -45,14 +44,12 @@ for z in range (1, 100):
         darkest = current
         yBottom = h-z
 
-print("count x-axis...")
 # count the x-axis lines (vertical)
 xAxis = []
 for c, x in enumerate(p[yBottom+2][55:]):
     if x[0] == 75 and x[1] == 75 and x[2] == 75:
         xAxis.append(c + 55)
 
-print("count y-axis...")
 # count the y-axis lines (horizontal)
 yAxis = []
 for c, x in enumerate(p[30:]):
@@ -60,7 +57,6 @@ for c, x in enumerate(p[30:]):
     if x[o][0] == 75 and x[o][0] == 75 and x[o][0] == 75:
         yAxis.append(c+30)
 
-print("count green intersections...")
 # record the location of green intersections on the vertical x-axis lines
 green = []
 for c in xAxis:
@@ -83,8 +79,26 @@ def getLabels(rows):
         # some labels will be too hard to read, but that should be acceptable
         # if we can infer pixel position based on the other labels (linearly)
         if text != "": 
-            labels.append((row, int(text)))
+            labels.append([row, int(text)])
+        else:
+            labels.append([row, 0])
     return labels
 
-print("getting labels...\n")
-pp.pprint(getLabels(yAxis))
+labels = getLabels(yAxis)
+
+# find the y-axis interval (mode of all spreads)
+spreads = []
+for z, label in enumerate(labels):
+    if z != 0:
+        spreads.append(labels[z-1][1] - labels[z][1])
+spread = stats.mode(spreads)[0][0]
+
+# infer the misread labels using the mode spread
+for z, label in enumerate(labels):
+    if label[1] == 0:
+        if z == len(labels) - 1:
+            label[1] = labels[z-1][1] - spread
+        else:
+            label[1] = labels[z+1][1] + spread
+
+pp.pprint(labels)
