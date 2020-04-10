@@ -11,7 +11,7 @@ import sys
 from scipy import stats
 
 # set this to the location of your tesseract-ocr binary (depends on os)
-pytesseract.pytesseract.tesseract_cmd = "/usr/local/bin/tesseract"
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract-ocr"
 
 if len(sys.argv) == 1:
     print("specify filename")
