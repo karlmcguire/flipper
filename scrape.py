@@ -185,7 +185,13 @@ def get_labels(img, bottom, lines):
         return y_labels
     return [get_x(), get_y()]
 
+# get img from disk
 img = get_image(get_file_path())
+# find bottom line
 bottom = get_bottom(img)
+# find gridlines
 lines = get_lines(img, bottom)
-pp.pprint(get_labels(img, bottom, lines))
+# find labels
+labels = get_labels(img, bottom, lines)
+
+pp.pprint(labels)
