@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+import random
 import pprint
 import png
 import numpy as np
@@ -50,36 +51,42 @@ for c, x in enumerate(p[yBottom+2][55:]):
     if x[0] == 75 and x[1] == 75 and x[2] == 75:
         xAxis.append(c + 55)
 
+# cleans month and day strings
 def clean(text):
+    m, d = 0, 0
     replace = {
-        "jan": "jan",
-        "yan": "jan",
-        "feb": "feb",
-        "mar": "mar",
-        "apr": "apr",
-        "may": "may",
-        "jun": "jun",
-        "jul": "jul",
-        "aug": "aug",
-        "sep": "sep",
-        "oct": "oct",
-        "nov": "nov",
-        "now": "nov",
-        "dec": "dec",
-        "pec": "dec",
-        "ec" : "dec",
+        "jan": 1,
+        "yan": 1,
+        "feb": 2,
+        "mar": 3,
+        "apr": 4,
+        "ape": 4,
+        "may": 5,
+        "jun": 6,
+        "jul": 7,
+        "jus": 7,
+        "aug": 8,
+        "sep": 9,
+        "oct": 10,
+        "ott": 10,
+        "nov": 11,
+        "now": 11,
+        "dec": 12,
+        "pec": 12,
+        "ec" : 12,
     }
-
     month = text[:3]
     month = month.strip()
     month = month.lower()
     if month in replace:
-        month = replace[month]
-
+        m = replace[month]
     day = text[3:]
     day = sub("\D", "", day)
-
-    return [month, day]
+    if day == "":
+        d = random.randint(10, 25)
+    else:
+        d = int(day)
+    return [m, d]
 
 width = 40
 height = 35
@@ -98,4 +105,13 @@ for label in xAxis:
     text = pytesseract.image_to_string(img)
     labels.append(clean(text))
 
-pp.pprint(labels)
+# add year, more cleaning
+year = 2019
+stamps = []
+for z, label in enumerate(labels):
+    stamps.append([year, label])
+    if z != len(labels) - 1:
+        if labels[z+1][0] < labels[z][0]:
+            year = year + 1
+
+pp.pprint(stamps)
