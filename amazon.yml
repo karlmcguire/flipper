@@ -1,6 +1,0 @@
-price:
-    css: 'div#priceInsideBuyBox_feature_div.feature span.a-size-medium'
-    type: Text
-name:
-    css: 'h1.a-size-large span.a-size-large'
-    type: Text

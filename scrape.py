@@ -66,16 +66,73 @@ def get_points(img, lines):
                 points[x].append(i)
     return points
 
-def get_labels(img, lines):
+def get_labels(img, bottom, lines):
     def get_x():
         def clean(text):
-            month = 0
-            day = 0
+            m, d = 0, 0
             replace = {
-                    
+                "jan": 1,
+                "yan": 1,
+                "feb": 2,
+                "mar": 3,
+                "apr": 4,
+                "a3" : 4,
+                "ape": 4,
+                "may": 5,
+                "wma": 5,
+                "jun": 6,
+                "jon": 6,
+                "jul": 7,
+                "30" : 7,
+                "u2s": 7,
+                "s"  : 7,
+                "jus": 7,
+                "aug": 8,
+                "sep": 9,
+                "oct": 10,
+                "ott": 10,
+                "nov": 11,
+                "now": 11,
+                "dec": 12,
+                "pec": 12,
+                "ec" : 12,
             }
-            return
-        return
+            day = text[3:]
+            day = sub("\D", "", day)
+            if day == "": d = random.randint(10, 25)
+            else: d = int(day)
+            month = text[:3]
+            month = month.strip()
+            month = month.lower()
+            if month in replace:
+                m = replace[month]
+            else:
+                print("month '" + month + "' not found with day " + str(d))
+            return [m, d]
+        width = 40
+        height = 35
+        x_offset = -33
+        y_offset = 6
+        d_labels = []
+        for x in lines[0]:
+            box = []
+            for i in range(0, height):
+                box.append(img[0]
+                           [bottom + y_offset + i]
+                           [x + x_offset : x + x_offset + width].tolist())
+            arr = np.asarray(box) 
+            seg = Image.fromarray(arr.astype(np.uint8))
+            seg = seg.rotate(-45, resample=Image.BICUBIC, expand=True)
+            text = pytesseract.image_to_string(seg)
+            d_labels.append(clean(text))
+        year = 2019
+        x_labels = []
+        for i, label in enumerate(d_labels):
+            x_labels.append([year, label[0], label[1]])
+            if i != len(d_labels) - 1:
+                if d_labels[i+1][0] < label[0]:
+                    year = year + 1
+        return x_labels
     def get_y():
         def clean(y_labels):
             nums = []
@@ -104,12 +161,12 @@ def get_labels(img, lines):
             y_labels.append([y, num])
         clean(y_labels)
         return y_labels
-    return get_y()
+    return [get_x(), get_y()]
 
 def main():
     img = get_image(get_file_path())
     bottom = get_bottom(img)
     lines = get_lines(img, bottom)
-    pp.pprint(get_labels(img, lines))
+    pp.pprint(get_labels(img, bottom, lines))
 
 main()
