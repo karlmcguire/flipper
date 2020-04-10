@@ -11,14 +11,24 @@ from PIL import Image
 from re import sub
 from scipy import stats
 
+# you will most likely have to change this value to point to the tesseract* 
+# binary on your system
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract-ocr"
+
+# for that pretty printing 
 pp = pprint.PrettyPrinter(indent=1)
 
+# get_file_path returns the second commandline argument, which should be the
+# path to the chart png
+#
+# for example, ./scrape.py charts/chart.png
 def get_file_path():
     if len(sys.argv) == 1:
         sys.exit("2nd argument must be chart file path")
     return sys.argv[1]
 
+# get_image reads the png file from disk and returns pixel data, width, and 
+# height
 def get_image(path):
     read = png.Reader(file=open(path, "rb"))
     img = read.asRGBA()
@@ -29,6 +39,8 @@ def get_image(path):
             width,
             height]
 
+# get_bottom takes an img parameter (returned by get_image) and returns the
+# y-pixel value of the bottom chart border (above axis labels)
 def get_bottom(img):
     bottom = 0
     darkest = sys.maxsize
@@ -39,6 +51,8 @@ def get_bottom(img):
             bottom = img[2]-i
     return bottom
 
+# get_lines takes an img and bottom parameter and returns the locations of the
+# x-axis and y-axis gridlines (gray)
 def get_lines(img, bottom):
     def get_x():
         x_lines = [] 
@@ -57,6 +71,12 @@ def get_lines(img, bottom):
     y = get_y(x)
     return [x, y]
 
+# get_points takes an img and lines parameter and returns a dictionary where
+# keys are x-axis locations and values are green pixels on that vertical line
+#
+# because there can be a lot of pixels on the vertical line, the dictionary
+# makes it easier for deriving the accurate point position on the graph (by 
+# choosing the median point, for example - not sure yet)
 def get_points(img, lines):
     points = {}
     for x in lines[0]:
@@ -66,6 +86,8 @@ def get_points(img, lines):
                 points[x].append(i)
     return points
 
+# get_labels takes an img, bottom, and lines parameter and returns the labels
+# of the x-axis and y-axis
 def get_labels(img, bottom, lines):
     def get_x():
         def clean(text):
@@ -163,10 +185,7 @@ def get_labels(img, bottom, lines):
         return y_labels
     return [get_x(), get_y()]
 
-def main():
-    img = get_image(get_file_path())
-    bottom = get_bottom(img)
-    lines = get_lines(img, bottom)
-    pp.pprint(get_labels(img, bottom, lines))
-
-main()
+img = get_image(get_file_path())
+bottom = get_bottom(img)
+lines = get_lines(img, bottom)
+pp.pprint(get_labels(img, bottom, lines))
