@@ -15,9 +15,6 @@ from scipy import stats
 # binary on your system
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract-ocr"
 
-# for that pretty printing 
-pp = pprint.PrettyPrinter(indent=1)
-
 # get_file_path returns the second commandline argument, which should be the
 # path to the chart png
 #
@@ -37,7 +34,6 @@ def get_image(path):
     data = img[2]
     return [np.reshape(np.vstack(list(data)), (height, width, 4)),
             width,
-            height]
 
 # get_bottom takes an img parameter (returned by get_image) and returns the
 # y-pixel value of the bottom chart border (above axis labels)
@@ -184,14 +180,3 @@ def get_labels(img, bottom, lines):
         clean(y_labels)
         return y_labels
     return [get_x(), get_y()]
-
-# get img from disk
-img = get_image(get_file_path())
-# find bottom line
-bottom = get_bottom(img)
-# find gridlines
-lines = get_lines(img, bottom)
-# find labels
-labels = get_labels(img, bottom, lines)
-
-pp.pprint(labels)

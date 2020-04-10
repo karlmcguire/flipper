@@ -1,0 +1,5 @@
+link:
+    css: 'div.carousel_parent div.column a.truncy_title'
+    multiple: true
+    type: Attribute
+    attribute: href
