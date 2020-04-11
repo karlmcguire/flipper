@@ -3,15 +3,17 @@ export default () => {
     saved: false
   }
   return {
-    view: (vnode) => m(".column.is-one-third", m(".card", [
+    view: (vnode) => m(".column.is-one-third", m(".card", {
+      style: `display:flex;flex-direction:column;height:100%;`,
+    }, [
       m("a.header.card-header", {href: "/#!/view/" + vnode.attrs.id},
         m("p.card-header-title", m("div", {style: `
-          max-height: 3rem;
+          height: 3rem;
           overflow: hidden;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
-        `}, vnode.attrs.name))
+        `}, vnode.attrs.data.name))
       ),
       m("a.card-image", {href: "/#!/view/" + vnode.attrs.id},
         m("figure.image.is-4by4", {style: `
@@ -21,13 +23,15 @@ export default () => {
           display: flex;
           justify-content: space-around;
         `}, m("img", {
-          src: vnode.attrs.img,
+          src: vnode.attrs.data.img,
           style: `
             height: 200px;
             width: auto;
         `}))
       ),
-      m(".card-content", m(".content", [
+      m(".card-content", m(".content", {
+        style: `height:100%;`,
+      }, [
         m("hr"),
         m(".columns", {style: `
           margin-top: -1.25em; 
@@ -36,20 +40,24 @@ export default () => {
             m("p.has-text-grey", {style: `
               margin-bottom: 0.5em;
             `}, "Price"),
-            m(".tag.is-success.is-light.is-medium.has-text-weight-semibold", 
-              {style: `width: 100%;`}, "$" + vnode.attrs.price)
+            m(".tag.is-light.is-medium.has-text-weight-semibold" + 
+              (vnode.attrs.data.current_price == "Not in Stock" ? 
+                ".is-danger" : ".is-success"), 
+              {style: `width: 100%;`}, 
+                (vnode.attrs.data.current_price == "Not in Stock" ?
+                "Out of stock" : vnode.attrs.data.current_price))
           ]),
           m(".column.is-half.has-text-centered", [
             m("p.has-text-grey", {style: `
               margin-bottom: 0.5em; 
-            `}, "Last"),
+            `}, "List"),
             m(".tag.is-light.is-medium.has-text-weight-semibold", 
-              {style: `width: 100%;`}, "$" + vnode.attrs.lastPrice)
+              {style: `width: 100%;`}, vnode.attrs.data.list_price)
           ])
         ]),
       ])),
       m("footer.card-footer", [
-        m("a.card-footer-item", {href: "/#!/view/stuff/"}, "View"),
+        m("a.card-footer-item", {href: "/#!/view/" + vnode.attrs.id}, "View"),
         m("a.card-footer-item" + (model.saved ? ".has-text-danger" : ""), {
           onclick: () => model.saved = (model.saved ? false : true ),
         }, "Save" + (model.saved ? "d" : "")),

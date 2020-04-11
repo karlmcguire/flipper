@@ -18,8 +18,8 @@ const menu = {
     m(".level-right", [
       m("p.level-item", m("strong", "All")),
       m("p.level-item", m("a", "Amazon")),
-      m("p.level-item", m("a", "Ebay")),
-      m("p.level-item", m("a", "Facebook")),
+      //m("p.level-item", m("a", "Ebay")),
+      //m("p.level-item", m("a", "Alibaba")),
     ]),
   ])
 }
@@ -28,8 +28,9 @@ export default {
   view: () => m(".container.section", [
     m(menu),
     m("br"),
-    m(".columns.is-multiline", 
-      Array.from(Items).map(([key, val]) => m(Item, val)),
+    m(".columns.is-multiline.d-flex", {
+    }, Array.from(Items).slice(0, 12).map(
+        ([key, val]) => m(Item, {id: key, data: val})),
     )
   ])
 }

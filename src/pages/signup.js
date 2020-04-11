@@ -37,7 +37,8 @@ export default () => {
                   else mod.name = ".is-success"
                 }
               })),
-              m("p.help", "Optional, but this will help us personalize your experience"),
+              m("p.help", 
+                "Optional, but this will help us personalize your experience"),
             ]),
             m(".field", [
               m("label.label", "Email"),
