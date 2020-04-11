@@ -5,10 +5,7 @@ from urllib.parse import urlparse
 import chart
 import json
 
-#print(json.dumps(chart.new("./charts/B008OEHT30.png")))
-
 out = {}
-
 i = 0
 with open("./data/products.json") as f:
     products = json.load(f)

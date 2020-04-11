@@ -11,14 +11,16 @@ import sys
 
 products = {}
 
-with open("products.json") as json_file:
+with open("./data/pages.json") as json_file:
     data = json.load(json_file)
     for i, product in enumerate(data):
         asin = urlparse(product).path[9:]
-        #print(str(i) + "/" + str(len(data)) + ": " + asin)
+        print(str(i) + "/" + str(len(data)) + ": " + asin)
         with open("./pages/" + asin) as html:
             e = Extractor.from_yaml_file("./templates/product.yml")
             d = e.extract(html.read())
             products[asin] = d
 
-print(json.dumps(products, indent=True))
+
+with open("products.json", "w") as f:
+    json.dump(products, f, indent=4)

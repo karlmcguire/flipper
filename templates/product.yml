@@ -49,3 +49,7 @@ upc:
 sku:
     css: 'tr.odd:nth-of-type(9) td:nth-of-type(2)'
     type: Text
+img:
+    css: 'div.column.column-block img'
+    type: Attribute
+    attribute: src
