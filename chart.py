@@ -8,6 +8,8 @@ import pprint
 import numpy as np
 import pytesseract
 from PIL import Image
+from PIL import ImageEnhance
+from PIL import ImageFilter
 from re import sub
 from scipy import stats
 
@@ -34,6 +36,7 @@ def get_image(path):
     data = img[2]
     return [np.reshape(np.vstack(list(data)), (height, width, 4)),
             width,
+            height]
 
 # get_bottom takes an img parameter (returned by get_image) and returns the
 # y-pixel value of the bottom chart border (above axis labels)
@@ -80,6 +83,11 @@ def get_points(img, lines):
         for i, p in enumerate(img[0]):
             if p[x][0] == 99 and p[x][1] == 168 and p[x][2] == 94:
                 points[x].append(i)
+    for p in points:
+        if len(points[p]) == 0:
+            points[p] = -1
+        else:
+            points[p] = np.average(points[p])
     return points
 
 # get_labels takes an img, bottom, and lines parameter and returns the labels
@@ -92,6 +100,7 @@ def get_labels(img, bottom, lines):
                 "jan": 1,
                 "yan": 1,
                 "feb": 2,
+                "reb": 2,
                 "mar": 3,
                 "apr": 4,
                 "a3" : 4,
@@ -101,6 +110,7 @@ def get_labels(img, bottom, lines):
                 "jun": 6,
                 "jon": 6,
                 "jul": 7,
+                "w21": 7,
                 "30" : 7,
                 "u2s": 7,
                 "s"  : 7,
@@ -146,10 +156,14 @@ def get_labels(img, bottom, lines):
         year = 2019
         x_labels = []
         for i, label in enumerate(d_labels):
-            x_labels.append([year, label[0], label[1]])
+            x_labels.append([int(year), label[0], int(label[1])])
             if i != len(d_labels) - 1:
+                if d_labels[i+1][0] == 0:
+                    if label[0] != 12:
+                        d_labels[i+1][0] = label[0] + 1
                 if d_labels[i+1][0] < label[0]:
-                    year = year + 1
+                    if year != 2020:
+                        year = year + 1
         return x_labels
     def get_y():
         def clean(y_labels):
@@ -164,7 +178,7 @@ def get_labels(img, bottom, lines):
                 print("minimum y-axis label is not at bottom, verify ok")
             start = y_labels[len(y_labels)-1][1] 
             for i, label in enumerate(y_labels):
-                label[1] = start + (dif * (len(y_labels) - 1 - i))
+                label[1] = int(start + (dif * (len(y_labels) - 1 - i)))
         y_labels = []
         for y in lines[1]:
             box = []
@@ -172,6 +186,8 @@ def get_labels(img, bottom, lines):
                 box.append(img[0][y-10+i][:lines[0][0]-6].tolist())
             arr = np.asarray(box)
             seg = Image.fromarray(arr.astype(np.uint8))
+            seg = seg.resize((len(arr[0])*3, len(arr)*3), resample=Image.NEAREST)
+            seg = seg.filter(ImageFilter.UnsharpMask(radius=20, percent=150))
             text = pytesseract.image_to_string(seg)
             text = sub("\D", "", text)
             num = 0
@@ -180,3 +196,26 @@ def get_labels(img, bottom, lines):
         clean(y_labels)
         return y_labels
     return [get_x(), get_y()]
+
+def new(path):
+    img = get_image(path)
+    bottom = get_bottom(img)
+    lines = get_lines(img, bottom)
+    points = get_points(img, lines)
+    labels = get_labels(img, bottom, lines)
+    chart = {
+        "points": [],
+        "x_axis": labels[0],
+        "y_axis": labels[1],
+    }
+    slope = (labels[1][1][1] - labels[1][0][1]) / (labels[1][1][0] - labels[1][0][0])
+    inter = labels[1][0]
+    for point in points.values():
+        if point == -1:
+            chart["points"].append(point)
+        else:
+            p = point - inter[0]
+            v = (p * slope) + inter[1]
+            chart["points"].append(v)
+
+    return chart 
