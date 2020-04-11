@@ -1,0 +1,51 @@
+name:
+    css: 'div.content div.column div.row h2 a'
+    type: Text
+price:
+    css: span.green
+    type: Text
+current_price:
+    css: 'div.padded div.column:nth-of-type(1) div.column tr:nth-of-type(1) td:nth-of-type(2)'
+    type: Text
+highest_price:
+    css: 'div.padded div.column:nth-of-type(1) div.column tr.highest_price td:nth-of-type(2)'
+    type: Text
+lowest_price:
+    css: 'div.padded div.column:nth-of-type(1) div.column tr.lowest_price td:nth-of-type(2)'
+    type: Text
+current_price_date:
+    css: 'div.padded div.column:nth-of-type(1) div.column tr:nth-of-type(1) td:nth-of-type(3)'
+    type: Text
+highest_price_date:
+    css: 'div.padded div.column:nth-of-type(1) div.column tr.highest_price td:nth-of-type(3)'
+    type: Text
+lowest_price_date:
+    css: 'div.padded div.column:nth-of-type(1) div.column tr.lowest_price td:nth-of-type(3)'
+    type: Text
+product_group:
+    css: 'tr.odd:nth-of-type(1) td:nth-of-type(2)'
+    type: Text
+category:
+    css: 'tr.even:nth-of-type(2) td:nth-of-type(2)'
+    type: Text
+manufacturer:
+    css: 'tr.odd:nth-of-type(3) td:nth-of-type(2)'
+    type: Text
+model:
+    css: 'tr.even:nth-of-type(4) td:nth-of-type(2)'
+    type: Text
+locale:
+    css: 'tr.odd:nth-of-type(5) td:nth-of-type(2)'
+    type: Text
+list_price:
+    css: 'tr.even:nth-of-type(6) td:nth-of-type(2)'
+    type: Text
+ean:
+    css: 'tr.odd:nth-of-type(7) td:nth-of-type(2)'
+    type: Text
+upc:
+    css: 'tr.even:nth-of-type(8) td:nth-of-type(2)'
+    type: Text
+sku:
+    css: 'tr.odd:nth-of-type(9) td:nth-of-type(2)'
+    type: Text
