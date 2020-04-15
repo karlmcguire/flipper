@@ -19,11 +19,20 @@ export default () => {
           )),
           m(".column.is-three-quarters", [
             m("h1", m("strong", item.name)),
-            m(""),
+            m("br"),
+            m(".level", [
+              m(".level-left", [
+                m("a.button.is-link", {
+                  target: "_",
+                  href: "https://amzn.com/" + vnode.attrs.id, 
+                }, "View on Amazon")
+              ]),
+              m(".level-right", []),
+            ]),
           ]),
         ]))),
         m(".column.is-one-third", m(".box", {
-          //style: `display:flex;flex-direction:column;height:100%;`,
+          style: `display:flex;flex-direction:column;height:100%;`,
         }, [
           m("table.table.is-striped.is-fullwidth", m("tbody", [
             m("tr", [

@@ -61,7 +61,10 @@ export default () => {
         m("a.card-footer-item" + (model.saved ? ".has-text-danger" : ""), {
           onclick: () => model.saved = (model.saved ? false : true ),
         }, "Save" + (model.saved ? "d" : "")),
-        m("a.card-footer-item", "Buy"),
+        m("a.card-footer-item", {
+          target: "_",
+          href: "https://amzn.com/" + vnode.attrs.id,
+        }, "Buy"),
       ])
     ]))
   }

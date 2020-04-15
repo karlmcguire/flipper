@@ -1,5 +1,6 @@
 const months = [
-  "",
+  // TODO: handle this 0 month, should never be used
+  "Jan",
   "Jan",
   "Feb",
   "Mar",
@@ -74,7 +75,7 @@ export default () => {
                   data: points,
                   spanGaps: true,   
                   label: "Amazon",
-                  borderColor: "hsl(204, 86%, 53%)",
+                  borderColor: "#3273dc",
                   fill: false
                 }]
               },

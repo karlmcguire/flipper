@@ -1,18 +1,26 @@
 import Items from "../model/items"
 import Item from "../components/item"
+  
+let items = Array.from(Items)
 
 const menu = {
   view: () => m("nav.level", [
     m(".level-left", [
       m(".level-item", m("p.subtitle.is-5", m.trust(`
-        <strong>1852</strong> items
+        <strong>` + items.length + `</strong> items
       `))),
       m(".level-item", m(".field.has-addons", [
-        m("p.control", m("input.input", {
+        m("p.control", m("input#search.input", {
           "type": "text",
           "placeholder": "Find an item",
         })),
-        m("p.control", m("button.button", "Search"))
+        m("p.control", m("button.button", {
+          onclick: (e) => {
+            const query = document.getElementById("search").value.toLowerCase()
+            items = items.filter(item => 
+              item[1].name.toLowerCase().includes(query))
+          }
+        }, "Search"))
       ]))
     ]),
     m(".level-right", [
@@ -27,16 +35,15 @@ const menu = {
 export default () => {
   let currPage = 0
   const pageSize = 16
-  const pages = Math.ceil(Items.size / pageSize)
+  const pages = Math.ceil(items.size / pageSize)
   let prevAttr = {disabled: ""}
   let nextAttr = {}
-  const items = Array.from(Items)
   return {
     oninit: (vnode) => {
-      console.log(vnode.attrs.page)
+      //console.log(vnode.attrs.page)
     },
     onupdate: (vnode) => {
-      console.log("hello")
+      //console.log("hello")
     },
     view: (vnode) => m(".container.section", [
       m(menu),
