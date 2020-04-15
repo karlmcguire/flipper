@@ -3,7 +3,7 @@ export default () => {
     saved: false
   }
   return {
-    view: (vnode) => m(".column.is-one-third", m(".card", {
+    view: (vnode) => m(".column.is-one-quarter", m(".card", {
       style: `display:flex;flex-direction:column;height:100%;`,
     }, [
       m("a.header.card-header", {href: "/#!/view/" + vnode.attrs.id},
@@ -16,7 +16,7 @@ export default () => {
         `}, vnode.attrs.data.name))
       ),
       m("a.card-image", {href: "/#!/view/" + vnode.attrs.id},
-        m("figure.image.is-4by4", {style: `
+        m("figure.image", {style: `
           padding: 2rem;
           padding-bottom: 0;
           margin-bottom: -1rem;
@@ -25,7 +25,7 @@ export default () => {
         `}, m("img", {
           src: vnode.attrs.data.img,
           style: `
-            height: 200px;
+            height: 125px;
             width: auto;
         `}))
       ),

@@ -15,8 +15,12 @@ const months = [
 ]
 
 export default () => {
+  let state = {
+    tab: "chart",
+  }
   let points = []
   let labels = []
+  let table = []
   return {
     oninit: (vnode) => {
       /* shows gaps in the lines where data is missing
@@ -32,15 +36,34 @@ export default () => {
       points = points.map(point => point == -1 ? avg : point.toFixed(0))
       labels = vnode.attrs.chart.x_axis.map(label =>
         months[label[1]] + " " + (label[0] - 2000).toString())
+      for(let i = 0; i < points.length; i++) {
+        table.push({label: labels[i], point: points[i]})
+      }
       m.redraw()
     }, 
     view: (vnode) => m(".box", [
       m(".tabs.is-boxed", m("ul", [
-        m("li.is-active", m("a", "Chart")),
-        m("li", m("a", "Table")),
+        m("li" + (state.tab == "chart" ? ".is-active" : ""), {
+          onclick: () => {
+            state.tab = "chart"
+          },
+        }, m("a", "Chart")),
+        m("li" + (state.tab == "table" ? ".is-active" : ""), {
+          onclick: () => {
+            state.tab = "table"
+          },
+        }, m("a", "Table")),
       ])),
-      m("div", {
-        style: `height:400px;`,
+      m("div" + (state.tab == "table" ? "" : ".is-hidden"), 
+        m("table.table.is-striped.is-fullwidth", m("tbody", [
+          table.map(row => m("tr", [
+            m("th", row.label),
+            m("td", "$" + row.point.toString()),
+          ])), 
+        ])),
+      ),
+      m("div" + (state.tab == "chart" ? "" : ".is-hidden"), {
+        style: `height:500px;`,
       }, m("canvas", {
           oncreate: (vnode) => {
             const chart = new Chart(vnode.dom.getContext("2d"), {
