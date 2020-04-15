@@ -11,6 +11,11 @@ import Login from "./pages/login"
 import View from "./pages/view"
 
 m.route(document.body, "/", {
+  "/page/:page": {view: (vnode) => m("div", [
+    m(Navbar), 
+    m(Home, {page: vnode.attrs.page}),
+    m(Footer)
+  ])},
   "/": {view: () => m("div", [
     m(Navbar), 
     m(Home),

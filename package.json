@@ -19,5 +19,6 @@
   "homepage": "https://github.com/karlmcguire/flipper#readme",
   "devDependencies": {
     "cssnano": "^4.1.10"
-  }
+  },
+  "dependencies": {}
 }
