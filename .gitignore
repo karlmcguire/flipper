@@ -4,6 +4,7 @@ __pycache__
 .ipynb_checkpoints
 pages
 charts
+.cache
 
 # dependencies
 /node_modules
