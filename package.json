@@ -1,0 +1,13 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "flipper backend",
+    "main": "src/server.js",
+    "scripts": {
+        "setup": "npm install && npm update",
+        "start": "node src/server.js"
+    },
+    "license": "MIT",
+    "dependencies": {
+    }
+}
