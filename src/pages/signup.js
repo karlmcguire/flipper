@@ -1,3 +1,5 @@
+import Config from "../config"
+
 export default () => {
   let data = {
     name: "",
@@ -99,6 +101,16 @@ export default () => {
               m(".control", m("button.button.is-primary", {
                 onclick: (e) => {
                   if(!data.terms) showTerms = true 
+
+                  fetch(Config.api.signup, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data)
+                  })
+                  .then((res) => res.json())
+                  .then((res) => console.log(res))
                 }
               }, m("strong", "Sign up"))),
               m(".control", m("a.button.is-danger.is-light", {
