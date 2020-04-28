@@ -3,15 +3,15 @@
     "version": "1.0.0",
     "description": "flipper backend",
     "main": "src/server.js",
-    "type": "module",
     "scripts": {
         "setup": "npm install && npm update",
-        "start": "node src/server.js",
-        "build": "docker build -t karl/flipper .",
-        "run": "docker run -p 8080:8080 karl/flipper"
+        "serve": "nodemon src/server.js"
     },
     "license": "MIT",
     "dependencies": {
-        "express": "^4.17.1"
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "pg": "^8.0.3"
     }
 }
