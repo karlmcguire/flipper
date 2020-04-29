@@ -7,8 +7,8 @@ const Users = () => pool
             (id SERIAL PRIMARY KEY,
              name VARCHAR(100),
              email VARCHAR(100) UNIQUE NOT NULL,
-             hash VARCHAR(256) NOT NULL,
-             created DATE NOT NULL)`)
+             hash VARCHAR(60) NOT NULL,
+             created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`)
   .then(res => console.log(res.rows))
   .catch(err => console.log(err))
 
