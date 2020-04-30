@@ -1,8 +1,4 @@
-const pool = require("./pool.js")
-
-pool.on("connect", () => console.log("connected to db"))
-
-const Users = () => pool
+const Users = (pool) => pool
   .query(`CREATE TABLE IF NOT EXISTS users
             (id SERIAL PRIMARY KEY,
              name VARCHAR(100),
@@ -12,6 +8,6 @@ const Users = () => pool
   .then(res => console.log(res.rows))
   .catch(err => console.log(err))
 
-module.exports = {
-  Users,
+module.exports = (pool) => {
+  Users(pool)
 }
