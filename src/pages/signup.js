@@ -1,4 +1,6 @@
 import Config from "../config"
+import Cookie from "../cookie"
+import User from "../model/user"
 
 export default () => {
   let data = {
@@ -109,8 +111,18 @@ export default () => {
                     },
                     body: JSON.stringify(data)
                   })
-                  .then((res) => res.json())
-                  .then((res) => console.log(res))
+                  .then(res => res.json())
+                  .then(res => {
+                    if(res.err !== null) {
+                      console.log(error)
+                    }
+                    Cookie.Set("token", res.token, 7)
+                    User.auth = true
+                    User.name = data.name
+                    User.email = data.email
+                    User.token = res.token
+                    m.route.set("/") 
+                  })
                 }
               }, m("strong", "Sign up"))),
               m(".control", m("a.button.is-danger.is-light", {
@@ -119,7 +131,7 @@ export default () => {
           ]) 
         ])
       ]),
-      m(".column.is-one-quarter"),
+      m(".column.is-one-quarter", m("card", m("p", User.token))),
     ]))
   }
 }
