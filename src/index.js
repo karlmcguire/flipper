@@ -3,9 +3,11 @@ dotenv.config()
 
 const express = require("express")
 const cookieParser = require("cookie-parser")
+const session = require("./session")
 const bcrypt = require("bcrypt")
+const crypto = require("crypto")
 const cors = require("cors")
-const jwt = require("jsonwebtoken")
+//const jwt = require("jsonwebtoken")
 const db = require("./db/pool")
 const app = express()
 
@@ -23,6 +25,9 @@ app.post("/signup", (req, res) => {
     db.query(query, [user.name, user.email, hash])
       .then(r => {
         // generate jwt
+        // 
+        // TODO: fuck the jwt, do this later
+        /*
         const token = jwt.sign({
           id: r.rows[0].id,
           name: user.name,
@@ -36,7 +41,16 @@ app.post("/signup", (req, res) => {
         res.cookie("token", token, {
           maxAge: 600000,
         })
-        res.json({err: null})
+        */
+        const token = crypto
+                        .createHash("sha256")
+                        .update(process.env.JWT_SECRET + hash)
+                        .digest("base64")
+        session.Add(token, r.rows[0].id)
+        res.json({
+          token: token, 
+          err: null,
+        })
       })
       .catch(e => {
         console.error(e.stack)
