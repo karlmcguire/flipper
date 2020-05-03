@@ -60,12 +60,12 @@ const person = {
 }
 
 export default {
-  view: () => m(".container.section", [
+  view: () => m(".main", m(".container.section", [
     m("h1.title", "About"),
     m.trust(`<p>At <a href="https://uncc.edu">UNCC</a>, some undergraduate Computer Science students opt to take a <a href="https://catalog.uncc.edu/preview_course_nopop.php?catoid=25&coid=81442">Software Development Project</a> course wherein they are required to build a piece of software and be judged/graded on its quality. Flipper is one of those projects, and we've spent an entire semester building it for you.</p>`),
     m("br"),
     m("h2.is-size-4.has-text-weight-semibold", "Team"),
     m("br"),
     m(".columns.is-multiline", people.map(p => m(person, p)))
-  ])
+  ]))
 }
