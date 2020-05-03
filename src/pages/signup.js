@@ -1,3 +1,7 @@
+import Config from "../config"
+import Cookie from "../cookie"
+import User from "../model/user"
+
 export default () => {
   let data = {
     name: "",
@@ -105,6 +109,26 @@ export default () => {
               m(".control", m("button.button.is-primary", {
                 onclick: (e) => {
                   if(!data.terms) showTerms = true 
+
+                  fetch(Config.api.signup, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data)
+                  })
+                  .then(res => res.json())
+                  .then(res => {
+                    if(res.err !== null) {
+                      console.log(error)
+                    }
+                    Cookie.Set("token", res.token, 7)
+                    User.auth = true
+                    User.name = data.name
+                    User.email = data.email
+                    User.token = res.token
+                    m.route.set("/") 
+                  })
                 }
               }, m("strong", "Sign up"))),
               m(".control", m("a.button.is-danger.is-light", {
