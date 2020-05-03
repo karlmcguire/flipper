@@ -1,3 +1,4 @@
+import Config from "../config"
 import State from "../model/state"
 
 export default () => {
@@ -11,6 +12,9 @@ export default () => {
     password: ""
   }
   return {
+    oninit: () => {
+      if(State.loggedIn) m.route.set("/")
+    }, 
     view: () => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),
       m(".column.is-two-quarters", m(".card", [
@@ -59,9 +63,26 @@ export default () => {
           ]),
           m(".field.is-grouped.is-grouped-right", [
             m(".control", m("button.button.is-primary", {
-              onclick: (e) => {
-                State.email = data.email
-                m.route.set("/")
+              onclick: () => {
+                fetch(Config.api.login, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                })
+                .then(res => res.json())
+                .then(res => {
+                  if(res.err !== null) {
+                    // TODO: alert box
+                    console.error(res.err)
+                    return
+                  }
+                  State.name = res.name
+                  State.email = data.email
+                  State.token = res.token
+                  m.route.set("/")
+                })
               },
             }, m("strong", "Log in"))),
             m(".control", m("a.button.is-danger.is-light", {

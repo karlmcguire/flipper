@@ -1,6 +1,6 @@
 import Config from "../config"
 import Cookie from "../cookie"
-import User from "../model/user"
+import State from "../model/state"
 
 export default () => {
   let data = {
@@ -19,6 +19,9 @@ export default () => {
   }
   let showTerms = false
   return {
+    oninit: () => {
+      if(State.loggedIn) m.route.set("/")
+    },
     view: (vnode) => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),
       m(".column.is-two-quarters", [
@@ -108,8 +111,10 @@ export default () => {
             m(".field.is-grouped.is-grouped-right", [
               m(".control", m("button.button.is-primary", {
                 onclick: (e) => {
-                  if(!data.terms) showTerms = true 
-
+                  if(!data.terms) {
+                    showTerms = true
+                    return
+                  }
                   fetch(Config.api.signup, {
                     method: "POST",
                     headers: {
@@ -120,13 +125,12 @@ export default () => {
                   .then(res => res.json())
                   .then(res => {
                     if(res.err !== null) {
-                      console.log(error)
+                      console.log(res.err)
+                      return
                     }
-                    Cookie.Set("token", res.token, 7)
-                    User.auth = true
-                    User.name = data.name
-                    User.email = data.email
-                    User.token = res.token
+                    State.name = data.name
+                    State.email = data.email
+                    State.token = res.token
                     m.route.set("/") 
                   })
                 }

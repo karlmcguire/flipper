@@ -7,7 +7,12 @@ const loggedIn = {
       m("a.navbar-link.has-text-weight-semibold", State.name),
       m(".navbar-dropdown.is-right", [
         m("a.navbar-item", "Settings"),
-        m("a.navbar-item.has-text-danger", "Log out"),
+        m("a.navbar-item.has-text-danger", {
+          onclick: () => {
+            State.logOut(null)
+            m.route.set("/")
+          }
+        }, "Log out"),
       ])
     ])
   ])
@@ -54,7 +59,7 @@ export default () => {
               (vnode.attrs.active === "contact" ? ".is-active" : ""), {
             "href": "/#!/contact"}, "Contact"), 
         ]),
-        m((State.loggedIn ? loggedIn : loggedIn), vnode.attrs), 
+        m((State.loggedIn ? loggedIn : loggedOut), vnode.attrs), 
       ])
     ])
   }

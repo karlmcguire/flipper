@@ -10,11 +10,6 @@ import Signup from "./pages/signup"
 import Login from "./pages/login"
 import View from "./pages/view"
 
-import State from "./model/state"
-
-//window.localStorage.setItem("testing", "hello world!")
-console.log(window.localStorage)
-
 m.route(document.body, "/", {
   "/page/:page": {view: (vnode) => m(".layout", [
     m(Navbar), 
