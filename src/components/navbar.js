@@ -5,7 +5,7 @@ const loggedIn = {
     m("a.navbar-item", "Saved"),
     m(".navbar-item.has-dropdown.is-hoverable", [
       m("a.navbar-link.has-text-weight-semibold", State.name),
-      m(".navbar-dropdown", [
+      m(".navbar-dropdown.is-right", [
         m("a.navbar-item", "Settings"),
         m("a.navbar-item.has-text-danger", "Log out"),
       ])
