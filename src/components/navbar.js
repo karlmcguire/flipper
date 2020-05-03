@@ -10,7 +10,7 @@ const loggedIn = {
         m("a.navbar-item.has-text-danger", "Log out"),
       ])
     ])
-  }
+  ])
 }
 
 const loggedOut = {
