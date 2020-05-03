@@ -15,7 +15,7 @@ export default () => {
   }
   let showTerms = false
   return {
-    view: () => m(".container.section", m(".columns", [
+    view: (vnode) => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),
       m(".column.is-two-quarters", [
         m(".notification.is-danger" + (showTerms ? "" : ".is-hidden"), [
@@ -25,12 +25,15 @@ export default () => {
           m.trust(`Please accept the terms and conditions.`)
         ]),
         m(".card", [
-          m(".card-content", [
+          m(".card-content", m("form", {
+            onsubmit: e => e.preventDefault(),
+          }, [
             m(".field", [
               m("label.label", "Name"),
               m(".control", m("input.input" + mod.name, {
                 type: "text",
                 placeholder: "Name",
+                autocomplete: "name",
                 oninput: (e) => {
                   data.name = e.target.value
                   if(data.name.length > 100) mod.name = ".is-danger"
@@ -45,6 +48,7 @@ export default () => {
               m(".control", m("input.input" + mod.email, {
                 type: "email",
                 placeholder: "Email",
+                autocomplete: "email",
                 oninput: (e) => {
                   data.email = e.target.value
                   if(!data.email.includes("@")) mod.email = ".is-danger"
@@ -58,6 +62,7 @@ export default () => {
               m(".control", m("input.input" + mod.password, {
                 type: "password",
                 placeholder: "Password",
+                autocomplete: "new-password",
                 oninput: (e) => {
                   data.password = e.target.value
                   if(data.password.length < 4 || data.password.length > 1000)
@@ -73,6 +78,7 @@ export default () => {
               m(".control", m("input.input" + mod.passwordVerify, {
                 type: "password",
                 placeholder: "Password",
+                autocomplete: "new-password",
                 oninput: (e) => {
                   data.passwordVerify = e.target.value
                   if(data.passwordVerify !== data.password)
@@ -104,10 +110,10 @@ export default () => {
               m(".control", m("a.button.is-danger.is-light", {
                 "href": "/#!/"}, "Cancel")),
             ])
-          ]) 
+          ])) 
         ])
       ]),
       m(".column.is-one-quarter"),
-    ]))
+    ])))
   }
 }

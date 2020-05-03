@@ -1,10 +1,12 @@
 import Items from "../model/items"
 import Item from "../components/item"
-  
+
+import State from "../model/state"
+
 let items = Array.from(Items)
 
 const menu = {
-  view: () => m("nav.level", [
+  view: (vnode) => m("nav.level", [
     m(".level-left", [
       m(".level-item", m("p.subtitle.is-5", m.trust(`
         <strong>` + items.length + `</strong> items
@@ -27,7 +29,6 @@ const menu = {
       m("p.level-item", m("strong", "All")),
       m("p.level-item", m("a", "Amazon")),
       m("p.level-item", m("a", "Ebay")),
-      m("p.level-item", m("a", "Alibaba")),
     ]),
   ])
 }
@@ -45,8 +46,8 @@ export default () => {
     onupdate: (vnode) => {
       //console.log("hello")
     },
-    view: (vnode) => m(".container.section", [
-      m(menu),
+    view: (vnode) => m(".main", m(".container.section", [
+      m(menu, {state: vnode.attrs.state}),
       m("br"),
       m(".columns.is-multiline.d-flex", {
       }, items.slice(currPage * pageSize, currPage * pageSize + pageSize).map(
@@ -77,6 +78,6 @@ export default () => {
           },
         }, "Next"),
       ]),
-    ])
+    ]))
   }
 }
