@@ -3,11 +3,10 @@ dotenv.config()
 
 const express = require("express")
 const cookieParser = require("cookie-parser")
-const session = require("./session")
+const sessions = require("./sessions")
 const bcrypt = require("bcrypt")
 const crypto = require("crypto")
 const cors = require("cors")
-//const jwt = require("jsonwebtoken")
 const db = require("./db/pool")
 const app = express()
 
@@ -24,29 +23,11 @@ app.post("/signup", (req, res) => {
       RETURNING id`
     db.query(query, [user.name, user.email, hash])
       .then(r => {
-        // generate jwt
-        // 
-        // TODO: fuck the jwt, do this later
-        /*
-        const token = jwt.sign({
-          id: r.rows[0].id,
-          name: user.name,
-          email: user.email,
-        }, process.env.JWT_SECRET, {
-          expiresIn: process.env.JWT_EXPIRE,
-        })
-        // TODO: the set-cookie header isn't working, this has something to do
-        //       with the path or domain under a localhost environment, need to
-        //       fix so we can simulate token cookies during development
-        res.cookie("token", token, {
-          maxAge: 600000,
-        })
-        */
         const token = crypto
                         .createHash("sha256")
                         .update(process.env.JWT_SECRET + hash)
                         .digest("base64")
-        session.Add(token, r.rows[0].id)
+        sessions.Add(token, r.rows[0].id)
         res.json({
           token: token, 
           err: null,
@@ -59,8 +40,39 @@ app.post("/signup", (req, res) => {
   })
 })
 
-app.get("/", (req, res) => {
-  res.send("nothing")
+app.post("/login", (req, res) => {
+  const user = req.body
+  const query = `SELECT id, name, hash FROM users WHERE email = $1`
+  db.query(query, [user.email])
+    .then(r => {
+      bcrypt.compare(user.password, r.rows[0].hash, (err, good) => {
+        if(good) {
+          // TODO: use time-sensitive tokens
+          const token = crypto
+                          .createHash("sha256")
+                          .update(process.env.JWT_SECRET + r.rows[0].hash)
+                          .digest("base64")
+          sessions.Add(token, r.rows[0].id)
+          res.json({
+            name: r.rows[0].name,
+            token: token,
+            err: null,
+          })
+        } else {
+          res.json({
+            err: "invalid",
+          })
+        }
+      }) 
+    })
+    .catch(e => {
+      console.error(e.stack)
+      res.json({err: "db"}) 
+    })
+})
+
+app.get("/sessions/has", (req, res) => {
+  res.json({has: sessions.Has(req.query.token)})
 })
 
 app.listen(8080, () => {
