@@ -6,9 +6,10 @@ const pool = new Pool({
   idleTimeoutMillis: 60 * 1000,
 })
 
-pool.on("connect", () => console.log("connected to db"))
 pool.on("error", (err, client) => console.error("idle client: " + err))
 
 init(pool)
+
+console.log("connected to db")
 
 module.exports = pool

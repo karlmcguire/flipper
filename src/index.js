@@ -23,15 +23,13 @@ app.post("/signup", (req, res) => {
       RETURNING id`
     db.query(query, [user.name, user.email, hash])
       .then(r => {
+        // TODO: use time-sensitive tokens
         const token = crypto
                         .createHash("sha256")
                         .update(process.env.JWT_SECRET + hash)
                         .digest("base64")
         sessions.Add(token, r.rows[0].id)
-        res.json({
-          token: token, 
-          err: null,
-        })
+        res.json({token: token})
       })
       .catch(e => {
         console.error(e.stack)
@@ -56,18 +54,37 @@ app.post("/login", (req, res) => {
           res.json({
             name: r.rows[0].name,
             token: token,
-            err: null,
           })
         } else {
-          res.json({
-            err: "invalid",
-          })
+          // bad password
+          res.json({err: "invalid"})
         }
       }) 
     })
     .catch(e => {
-      console.error(e.stack)
-      res.json({err: "db"}) 
+      // user doesn't exist
+      res.json({err: "missing"}) 
+    })
+})
+
+app.post("/user/save", (req, res) => {
+  const user = {
+    token: req.body.token,
+    id: sessions.Get(req.body.token),
+  }
+  const item = req.body.id
+  if(user.token == undefined) {
+    res.json({err: "expired"})
+    return
+  }
+  const query = `INSERT INTO saved ("user", "item") VALUES($1, $2)`
+  db.query(query, [user.id, item])
+    .then(r => {
+      res.json({})
+    })
+    .catch(e => {
+      console.log(e.stack)
+      res.json({err: "db"})
     })
 })
 
