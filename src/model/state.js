@@ -2,9 +2,10 @@ import Config from "../config"
 import Cookie from "../cookie"
 
 let state = {
+  token: Cookie.Get(Config.client.tokenCookie),
   name: window.localStorage.getItem("name"),
   email: window.localStorage.getItem("email"),
-  token: Cookie.Get(Config.client.tokenCookie),
+  saved: new Map(JSON.parse(window.localStorage.getItem("saved"))),
 }
 
 if(state.token != "") {
@@ -39,10 +40,20 @@ export default {
     state.token = token
     Cookie.Set(Config.client.tokenCookie, token, Config.client.tokenExDays)
   },
+  saved: id => state.saved.has(id),
+  save: id => {
+    state.saved.set(id, true)
+    window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
+  },
+  unsave: id => {
+    state.saved.delete(id)
+    window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
+  },
   logOut: () => {
     state.name = null
     state.email = null
     state.token = ""
+    state.saved = null
     window.localStorage.clear()
     Cookie.Del(Config.client.tokenCookie)
   },

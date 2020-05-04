@@ -1,8 +1,12 @@
+import Config from "../config"
+import State from "../model/state"
+
 export default () => {
-  let model = {
-    saved: false
-  }
+  let saved = false
   return {
+    oninit: (vnode) => {
+      if("id" in vnode.attrs) saved = State.saved(vnode.attrs.id)
+    },
     view: (vnode) => m(".column.is-one-quarter", m(".card", {
       style: `display:flex;flex-direction:column;height:100%;`,
     }, [
@@ -58,9 +62,33 @@ export default () => {
       ])),
       m("footer.card-footer", [
         m("a.card-footer-item", {href: "/#!/view/" + vnode.attrs.id}, "View"),
-        m("a.card-footer-item" + (model.saved ? ".has-text-danger" : ""), {
-          onclick: () => model.saved = (model.saved ? false : true ),
-        }, "Save" + (model.saved ? "d" : "")),
+        m("a.card-footer-item" + 
+          (saved ? ".has-text-danger" : "") +
+          (State.loggedIn ? "" : ".is-hidden"), {
+          onclick: () => {
+            if(saved) {
+              State.unsave(vnode.attrs.id)
+              saved = false
+            } else {
+              State.save(vnode.attrs.id)
+              saved = true
+            }
+            fetch((saved ? Config.api.save : Config.api.unsave), {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: vnode.attrs.id,
+                token: State.token,
+              }),
+            })
+            .then(res => res.json())
+            .then(res => {
+              console.log(res)
+            })
+          },
+        }, "Save" + (saved ? "d" : "")),
         m("a.card-footer-item", {
           target: "_",
           href: "https://amzn.com/" + vnode.attrs.id,

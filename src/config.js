@@ -9,6 +9,8 @@ export default {
     url: api,
     signup: api + "/signup",
     login: api + "/login",
+    save: api + "/user/save",
+    unsave: api + "/user/unsave",
     sessions: {
       has: api + "/sessions/has",
     },
