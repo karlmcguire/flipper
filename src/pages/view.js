@@ -1,14 +1,18 @@
 import Items from "../model/items"
 import Price from "../components/price"
 import Details from "../components/details"
+import State from "../model/state"
 
 export default () => {
   let item = {}
+  let saved = false
   return {
     oninit: (vnode) => {
       item = Items.get(vnode.attrs.id)
+      window.scrollTo(0, 0)
+      saved = State.saved(vnode.attrs.id)
     },
-    view: (vnode) => m(".container.section", [
+    view: (vnode) => m(".main", m(".container.section", [
       m(".columns", [
         m(".column.is-two-thirds", m(".box", m(".columns", [
           m(".column.is-one-quarter", m("figure.image.is-4by4",
@@ -22,12 +26,26 @@ export default () => {
             m("br"),
             m(".level", [
               m(".level-left", [
-                m("a.button.is-link", {
+                m("a.button.is-warning.has-text-weight-semibold", {
                   target: "_",
                   href: "https://amzn.com/" + vnode.attrs.id, 
                 }, "View on Amazon")
               ]),
-              m(".level-right", []),
+              m(".level-right", [
+                m("a.button" + 
+                  (saved ? ".is-danger" : ".is-link") +
+                  (State.loggedIn ? "" : ".is-hidden"), {
+                  onclick: e => {
+                    if(saved) {
+                      State.unsave(vnode.attrs.id)
+                      saved = false
+                    } else {
+                      State.save(vnode.attrs.id)
+                      saved = true
+                    }
+                  },
+                }, (saved ? "Saved" : "Save"))
+              ]),
             ]),
           ]),
         ]))),
@@ -53,6 +71,6 @@ export default () => {
       ]),
       m(Price, item),
       m(Details, item),
-    ]) 
+    ]))
   }
 }

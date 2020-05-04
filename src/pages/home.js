@@ -66,6 +66,7 @@ export default () => {
               currPage--
             if(currPage == 0)
               e.target.setAttribute("disabled", "")
+            window.scrollTo(0, 0)
           },
         }, "Previous"),
         m("a.pagination-next", {
@@ -75,6 +76,7 @@ export default () => {
               currPage++
             if(currPage == pages)
               e.target.setAttribute("disabled", "")
+            window.scrollTo(0, 0)
           },
         }, "Next"),
       ]),

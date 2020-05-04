@@ -5,7 +5,10 @@ export default () => {
   let saved = false
   return {
     oninit: (vnode) => {
-      if("id" in vnode.attrs) saved = State.saved(vnode.attrs.id)
+      saved = State.saved(vnode.attrs.id)
+    },
+    onbeforeupdate: (vnode) => {
+      saved = State.saved(vnode.attrs.id)
     },
     view: (vnode) => m(".column.is-one-quarter", m(".card", {
       style: `display:flex;flex-direction:column;height:100%;`,
@@ -55,13 +58,17 @@ export default () => {
             m("p.has-text-grey", {style: `
               margin-bottom: 0.5em; 
             `}, "List"),
-            m(".tag.is-light.is-medium.has-text-weight-semibold", 
-              {style: `width: 100%;`}, vnode.attrs.data.list_price)
+            m(".tag.is-light.is-medium.has-text-weight-semibold", {
+              style: `width: 100%;`,
+            }, (vnode.attrs.data.list_price.includes("$") ? 
+                  vnode.attrs.data.list_price : "-"))
           ])
         ]),
       ])),
       m("footer.card-footer", [
-        m("a.card-footer-item", {href: "/#!/view/" + vnode.attrs.id}, "View"),
+        m("a.card-footer-item", {
+          href: "/#!/view/" + vnode.attrs.id,
+        }, "View"),
         m("a.card-footer-item" + 
           (saved ? ".has-text-danger" : "") +
           (State.loggedIn ? "" : ".is-hidden"), {

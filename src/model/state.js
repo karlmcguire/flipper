@@ -8,13 +8,20 @@ let state = {
   saved: new Map(JSON.parse(window.localStorage.getItem("saved"))),
 }
 
+const exit = () => {
+  state.name = null
+  state.email = null
+  state.token = ""
+  state.saved = null
+  window.localStorage.clear()
+  Cookie.Del(Config.client.tokenCookie)
+}
+
 if(state.token != "") {
   fetch(Config.api.sessions.has + `?token=${state.token}`)
   .then(res => res.json())
   .then(res => {
-    if(!res.has) {
-      // delete everything, log out 
-    }
+    if(!res.has) exit()
   })
 }
 
@@ -49,14 +56,7 @@ export default {
     state.saved.delete(id)
     window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
   },
-  logOut: () => {
-    state.name = null
-    state.email = null
-    state.token = ""
-    state.saved = null
-    window.localStorage.clear()
-    Cookie.Del(Config.client.tokenCookie)
-  },
+  logOut: exit,
   // read-only
   get loggedIn() {
     return state.email != null && state.name != null
