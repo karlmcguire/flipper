@@ -9,13 +9,10 @@ import Contact from "./pages/contact"
 import Signup from "./pages/signup"
 import Login from "./pages/login"
 import View from "./pages/view"
+import Settings from "./pages/settings"
+import Saved from "./pages/saved"
 
 m.route(document.body, "/", {
-  "/page/:page": {view: (vnode) => m(".layout", [
-    m(Navbar), 
-    m(Home, {page: vnode.attrs.page}),
-    m(Footer)
-  ])},
   "/": {view: () => m(".layout", [
     m(Navbar), 
     m(Home),
@@ -41,9 +38,25 @@ m.route(document.body, "/", {
     m(Login),
     m(Footer)
   ])},
-  "/view/:id": {view: (vnode) => m(".layout", [
+  "/user/settings": {view: () => m(".layout", [
+    m(Navbar, {active: "settings"}),
+    m(Settings),
+    m(Footer)
+  ])},
+  "/user/saved": {view: () => m(".layout", [
+    m(Navbar, {active: "saved"}),
+    m(Saved),
+    m(Footer)
+  ])},
+  "/view/:id": {view: vnode => m(".layout", [
     m(Navbar),
     m(View, {id: vnode.attrs.id}),
     m(Footer)
-  ])}
+  ])},
+  // TODO
+  "/page/:page": {view: vnode => m(".layout", [
+    m(Navbar), 
+    m(Home, {page: vnode.attrs.page}),
+    m(Footer)
+  ])},
 })

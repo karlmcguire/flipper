@@ -17,7 +17,7 @@ export default () => {
     passwordVerify: "",
     terms: "" 
   }
-  let showTerms = false
+  let errMsg = ""
   return {
     oninit: () => {
       if(State.loggedIn) m.route.set("/")
@@ -25,11 +25,11 @@ export default () => {
     view: (vnode) => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),
       m(".column.is-two-quarters", [
-        m(".notification.is-danger" + (showTerms ? "" : ".is-hidden"), [
+        m(".notification.is-danger" + (errMsg != "" ? "" : ".is-hidden"), [
           m("button.delete", {
-            onclick: () => showTerms = false, 
+            onclick: () => errMsg = "", 
           }),
-          m.trust(`Please accept the terms and conditions.`)
+          m.trust(errMsg)
         ]),
         m(".card", [
           m(".card-content", m("form", {
@@ -102,7 +102,7 @@ export default () => {
                   type: "checkbox",
                   oninput: (e) => {
                     data.terms = e.target.checked
-                    if(data.terms === true) showTerms = false
+                    if(data.terms === true) errMsg = ""
                   }
                 }),
                 m.trust(` I agree to the <a href="#">terms and conditions</a>`),
@@ -112,7 +112,7 @@ export default () => {
               m(".control", m("button.button.is-primary", {
                 onclick: (e) => {
                   if(!data.terms) {
-                    showTerms = true
+                    errMsg = "You must accept the terms and conditions."
                     return
                   }
                   fetch(Config.api.signup, {
@@ -124,8 +124,9 @@ export default () => {
                   })
                   .then(res => res.json())
                   .then(res => {
-                    if(res.err !== null) {
-                      console.log(res.err)
+                    if("err" in res) {
+                      errMsg = "Unexpected server error."
+                      m.redraw()
                       return
                     }
                     State.name = data.name
@@ -136,7 +137,8 @@ export default () => {
                 }
               }, m("strong", "Sign up"))),
               m(".control", m("a.button.is-danger.is-light", {
-                "href": "/#!/"}, "Cancel")),
+                href: "/#!/",
+              }, "Cancel")),
             ])
           ])) 
         ])
