@@ -79,9 +79,7 @@ app.post("/user/save", (req, res) => {
   }
   const query = `INSERT INTO saved ("user", "item") VALUES($1, $2)`
   db.query(query, [user.id, item])
-    .then(r => {
-      res.json({})
-    })
+    .then(r => res.json({}))
     .catch(e => {
       console.log(e.stack)
       res.json({err: "db"})
