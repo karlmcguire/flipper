@@ -15,13 +15,6 @@ const Saved = pool => pool
              created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`)
   .then().catch(err => console.error(err.stack))
 
-const Items = pool => pool
-  .query(``)
-  .then().catch(err => console.error(err.stack))
-
 module.exports = pool => {
   Users(pool)
-  Saved(pool)
-  // TODO: move items to SQL
-  //Items(pool)
 }
