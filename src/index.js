@@ -2,7 +2,10 @@ const express = require("express")
 const session = require("express-session")
 const config = require("./config")
 const redis = require("redis")
-const db = require("./db/pool")
+
+const state = require("./state")
+const action = require("./action")
+const model = require("./model")
 
 const api = express()
 const redisClient = redis.createClient()
@@ -18,11 +21,11 @@ api.use(session({
   store: new redisStore(config.sessions.redis(redisClient)),
 }))
 
-api.get("/", (req, res) => {
-  req.session.name = "karl" 
-  res.json({hello: "world"})
+api.post("/user/signup", async (req, res) => {
+  res.json(await state(model.user.signup(action.user.signup(req))))
 })
 
+api.disable("x-powered-by")
 api.listen(8080, () => {
   console.log("listening on :8080")
 })
