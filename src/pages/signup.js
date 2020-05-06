@@ -129,9 +129,11 @@ export default () => {
                       m.redraw()
                       return
                     }
+                    /*
                     State.name = data.name
                     State.email = data.email
                     State.token = res.token
+                    */
                     m.route.set("/") 
                   })
                 }

@@ -1,4 +1,4 @@
-const api = "http://localhost:8080"
+const api = "http://lvh.me:8080"
 
 export default {
   client: {
