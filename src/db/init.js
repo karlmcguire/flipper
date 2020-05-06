@@ -17,4 +17,5 @@ const Saved = pool => pool
 
 module.exports = pool => {
   Users(pool)
+  Saved(pool)
 }
