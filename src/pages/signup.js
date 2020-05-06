@@ -20,7 +20,7 @@ export default () => {
   let errMsg = ""
   return {
     oninit: () => {
-      if(State.loggedIn) m.route.set("/")
+      if(State.signedIn()) m.route.set("/")
     },
     view: (vnode) => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),
@@ -117,6 +117,7 @@ export default () => {
                   }
                   fetch(Config.api.signup, {
                     method: "POST",
+                    credentials: "include",
                     headers: {
                       "Content-Type": "application/json",
                     },
@@ -125,15 +126,13 @@ export default () => {
                   .then(res => res.json())
                   .then(res => {
                     if("err" in res) {
-                      errMsg = "Unexpected server error."
+                      errMsg = "Email is already registered."
+                      mod.email = ".is-danger"
                       m.redraw()
                       return
                     }
-                    /*
-                    State.name = data.name
-                    State.email = data.email
-                    State.token = res.token
-                    */
+                    State.name = res.name
+                    State.email = res.email
                     m.route.set("/") 
                   })
                 }

@@ -1,18 +1,15 @@
-const api = "http://lvh.me:8080"
+const api = "http://localhost:8080"
 
 export default {
-  client: {
-    tokenCookie: "flipper_token",
-    tokenExDays: 7,
+  session: {
+    cookie: "flipper_session",
   },
   api: {
-    url: api,
-    signup: api + "/signup",
-    login: api + "/login",
-    save: api + "/user/save",
-    unsave: api + "/user/unsave",
-    sessions: {
-      has: api + "/sessions/has",
-    },
+    info:    api + "/user/info",
+    signup:  api + "/user/signup",
+    signin:  api + "/user/signin",
+    signout: api + "/user/signout",
+    save:    api + "/user/save",
+    unsave:  api + "/user/unsave",
   },
 }

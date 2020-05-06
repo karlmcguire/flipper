@@ -34,7 +34,7 @@ export default () => {
               m(".level-right", [
                 m("a.button" + 
                   (saved ? ".is-danger" : ".is-link") +
-                  (State.loggedIn ? "" : ".is-hidden"), {
+                  (State.signedIn() ? "" : ".is-hidden"), {
                   onclick: e => {
                     if(saved) {
                       State.unsave(vnode.attrs.id)

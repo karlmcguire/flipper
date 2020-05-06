@@ -1,6 +1,6 @@
 import State from "../model/state"
 
-const loggedIn = {
+const signedIn = {
   view: (vnode) => m(".navbar-end", [
     m("a.navbar-item" +
       (vnode.attrs.active === "saved" ? ".is-active" : ""), {
@@ -15,7 +15,7 @@ const loggedIn = {
         }, "Settings"),
         m("a.navbar-item.has-text-danger", {
           onclick: () => {
-            State.logOut(null)
+            State.signOut()
             m.route.set("/")
           }
         }, "Log out"),
@@ -24,7 +24,7 @@ const loggedIn = {
   ])
 }
 
-const loggedOut = {
+const signedOut = {
   view: (vnode) => m(".navbar-end", m(".navbar-item", m(".buttons", [
     m("a.button.is-primary" +
       (vnode.attrs.active == "signup" ? ".is-active" : ""), {
@@ -71,7 +71,7 @@ export default () => {
             href: "/#!/contact",
           }, "Contact"), 
         ]),
-        m((State.loggedIn ? loggedIn : loggedOut), vnode.attrs), 
+        m((State.signedIn() ? signedIn : signedOut), vnode.attrs), 
       ])
     ])
   }

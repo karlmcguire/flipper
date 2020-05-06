@@ -71,7 +71,7 @@ export default () => {
         }, "View"),
         m("a.card-footer-item" + 
           (saved ? ".has-text-danger" : "") +
-          (State.loggedIn ? "" : ".is-hidden"), {
+          (State.signedIn() ? "" : ".is-hidden"), {
           onclick: () => {
             if(saved) {
               State.unsave(vnode.attrs.id)
@@ -82,12 +82,12 @@ export default () => {
             }
             fetch((saved ? Config.api.save : Config.api.unsave), {
               method: "POST",
+              credentials: "include",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                id: vnode.attrs.id,
-                token: State.token,
+                item: vnode.attrs.id,
               }),
             })
             .then(res => res.json())

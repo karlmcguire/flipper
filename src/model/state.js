@@ -1,27 +1,30 @@
-import Config from "../config"
 import Cookie from "../cookie"
+import Config from "../config"
 
-let state = {
-  token: Cookie.Get(Config.client.tokenCookie),
+const state = {
   name: window.localStorage.getItem("name"),
   email: window.localStorage.getItem("email"),
   saved: new Map(JSON.parse(window.localStorage.getItem("saved"))),
 }
 
-const exit = () => {
-  state.name = null
-  state.email = null
-  state.token = ""
-  state.saved = null
-  window.localStorage.clear()
-  Cookie.Del(Config.client.tokenCookie)
-}
-
-if(state.token != "") {
-  fetch(Config.api.sessions.has + `?token=${state.token}`)
+if((state.name == null || state.email == null)) {
+  fetch(Config.api.info, {
+    method: "GET",
+    credentials: "include",
+  })
   .then(res => res.json())
   .then(res => {
-    if(!res.has) exit()
+    if("err" in res) {
+      if(res.err != "invalid") console.error(res.err)
+      return
+    }
+    if("name" in res && "email" in res) {
+      state.name = res.name
+      window.localStorage.setItem("name", state.name)
+      state.email = res.email
+      window.localStorage.setItem("email", state.email)
+      m.redraw() 
+    }
   })
 }
 
@@ -40,14 +43,7 @@ export default {
     state.email = email
     window.localStorage.setItem("email", email)
   },
-  get token() {
-    return state.token
-  },
-  set token(token) {
-    state.token = token
-    Cookie.Set(Config.client.tokenCookie, token, Config.client.tokenExDays)
-  },
-  saved: id => state.saved.has(id),
+  
   save: id => {
     state.saved.set(id, true)
     window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
@@ -56,9 +52,25 @@ export default {
     state.saved.delete(id)
     window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
   },
-  logOut: exit,
-  // read-only
-  get loggedIn() {
-    return state.email != null && state.name != null
+  signOut: () => {
+    state.name = null
+    state.email = null
+    state.saved = new Map()
+    window.localStorage.clear()
+    fetch(Config.api.signout, {
+      method: "POST",
+      credentials: "include",
+    })
+    .then(res => res.json())
+    .then(res => {
+      if("err" in res) {
+        console.error(res.err)
+        return
+      }
+    })
   },
+  
+  signedIn: () => state.email != null && state.name != null,
+  
+  saved: id => state.saved.has(id),
 }

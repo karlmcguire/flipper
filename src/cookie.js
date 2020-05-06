@@ -28,5 +28,5 @@ const Del = cname => {
 export default {
   Get,
   Set,
-  Del
+  Del,
 }

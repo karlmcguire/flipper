@@ -14,7 +14,7 @@ export default () => {
   let errMsg = "" 
   return {
     oninit: () => {
-      if(State.loggedIn) m.route.set("/")
+      if(State.signedIn()) m.route.set("/")
     }, 
     view: (vnode) => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),
@@ -72,8 +72,9 @@ export default () => {
             m(".field.is-grouped.is-grouped-right", [
               m(".control", m("button.button.is-primary", {
                 onclick: () => {
-                  fetch(Config.api.login, {
+                  fetch(Config.api.signin, {
                     method: "POST",
+                    credentials: "include",
                     headers: {
                       "Content-Type": "application/json",
                     },
@@ -94,11 +95,8 @@ export default () => {
                       m.redraw()
                       return
                     }
-                    /*
                     State.name = res.name
-                    State.email = data.email
-                    State.token = res.token
-                    */
+                    State.email = res.email
                     m.route.set("/")
                   })
                 },
