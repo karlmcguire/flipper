@@ -18,8 +18,27 @@ const signup = async user => {
   }
 }
 
+const signin = async user => {
+  try {
+    const text = `SELECT id, name, hash FROM users WHERE email = $1`
+    const {rows} = await db.query(text, [user.email])
+    const good = await bcrypt.compare(user.password, rows[0].hash)
+    if(good) {
+      user.session.id = rows[0].id
+      user.session.name = rows[0].name
+      user.session.email = user.email
+      return user.session
+    } else {
+      return {err: "invalid"}
+    }
+  } catch(err) {
+    return {err: "unknown"}
+  }
+}
+
 module.exports = {
   user: {
     signup: signup,
+    signin: signin,
   },
 }

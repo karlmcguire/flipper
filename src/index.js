@@ -25,6 +25,10 @@ api.post("/user/signup", async (req, res) => {
   res.json(await state(model.user.signup(action.user.signup(req))))
 })
 
+api.post("/user/signin", async (req, res) => {
+  res.json(await state(model.user.signin(action.user.signin(req))))
+})
+
 api.disable("x-powered-by")
 api.listen(8080, () => {
   console.log("listening on :8080")
