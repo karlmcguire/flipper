@@ -6,3 +6,12 @@ html, body {
 .main {
   background-color: #fff;
 }
+
+.nav_container {
+  box-sizing: inherit;
+  margin: 0 auto;
+  width: 1344px;
+  padding: 0 0.75rem;
+  display: flex;
+  justify-content: space-between;
+}

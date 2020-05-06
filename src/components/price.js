@@ -56,12 +56,18 @@ export default () => {
         }, m("a", "Table")),
       ])),
       m("div" + (state.tab == "table" ? "" : ".is-hidden"), 
-        m("table.table.is-striped.is-fullwidth", m("tbody", [
-          table.map(row => m("tr", [
-            m("th", row.label),
-            m("td", "$" + row.point.toString()),
-          ])), 
-        ])),
+        m("table.table.is-striped.is-fullwidth", [
+          m("thead", [
+            m("th", "Date"),
+            m("th", "Price"),
+          ]),
+          m("tbody", [
+            table.map(row => m("tr", [
+              m("td", row.label),
+              m("td", "$" + row.point.toString()),
+            ])), 
+          ])
+        ]),
       ),
       m("div" + (state.tab == "chart" ? "" : ".is-hidden"), {
         style: `height:500px;`,
