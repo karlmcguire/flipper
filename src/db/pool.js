@@ -6,6 +6,7 @@ const pool = new Pool({
   idleTimeoutMillis: 60 * 1000,
 })
 
+pool.on("connect", (err, client) => console.log("connected: " + err.stack))
 pool.on("error", (err, client) => console.error("idle client: " + err))
 
 init(pool)

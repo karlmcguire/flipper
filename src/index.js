@@ -1,18 +1,38 @@
 const dotenv = require("dotenv")
-dotenv.config()
-
 const express = require("express")
-const cookieParser = require("cookie-parser")
-const sessions = require("./sessions")
+const session = require("express-session")
 const bcrypt = require("bcrypt")
 const crypto = require("crypto")
+const redis = require("redis")
 const cors = require("cors")
 const db = require("./db/pool")
 const app = express()
 
+const redisClient = redis.createClient()
+const redisStore = require("connect-redis")(session)
+
+dotenv.config()
+
 app.use(cors())
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  name: "flipper",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    domain: "lvh.me",
+    path: "/",
+  },
+  store: new redisStore({
+    host: "localhost",
+    port: 6379,
+    client: redisClient,
+    ttl: 86400,
+  }),
+}))
 app.use(express.json())
-app.use(cookieParser())
 
 app.post("/signup", (req, res) => {
   const user = req.body
@@ -23,13 +43,7 @@ app.post("/signup", (req, res) => {
       RETURNING id`
     db.query(query, [user.name, user.email, hash])
       .then(r => {
-        // TODO: use time-sensitive tokens
-        const token = crypto
-                        .createHash("sha256")
-                        .update(process.env.JWT_SECRET + hash)
-                        .digest("base64")
-        sessions.Add(token, r.rows[0].id)
-        res.json({token: token})
+        //res.json({token: token})
       })
       .catch(e => {
         console.error(e.stack)
@@ -45,16 +59,9 @@ app.post("/login", (req, res) => {
     .then(r => {
       bcrypt.compare(user.password, r.rows[0].hash, (err, good) => {
         if(good) {
-          // TODO: use time-sensitive tokens
-          const token = crypto
-                          .createHash("sha256")
-                          .update(process.env.JWT_SECRET + r.rows[0].hash)
-                          .digest("base64")
-          sessions.Add(token, r.rows[0].id)
-          res.json({
-            name: r.rows[0].name,
-            token: token,
-          })
+          req.session.name = r.rows[0].name
+          res.json({name: r.rows[0].name,})
+          console.log(res.headersSent)
         } else {
           // bad password
           res.json({err: "invalid"})
@@ -62,11 +69,13 @@ app.post("/login", (req, res) => {
       }) 
     })
     .catch(e => {
+      console.log(e.stack)
       // user doesn't exist
       res.json({err: "missing"}) 
     })
 })
 
+/*
 app.post("/user/save", (req, res) => {
   const user = {
     token: req.body.token,
@@ -86,9 +95,22 @@ app.post("/user/save", (req, res) => {
     })
 })
 
+app.post("/user/unsave", (req, res) => {
+  const user = {
+    token: req.body.token,
+    id: sessions.Get(req.body.token),
+  }
+  const item = req.body.id
+  if(user.token == undefined) {
+    res.json({err: "undefined"})
+    return
+  }
+})
+
 app.get("/sessions/has", (req, res) => {
   res.json({has: sessions.Has(req.query.token)})
 })
+*/
 
 app.listen(8080, () => {
   console.log("listening on :8080")
