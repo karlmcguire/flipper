@@ -11,5 +11,6 @@ export default {
     signout: api + "/user/signout",
     save:    api + "/user/save",
     unsave:  api + "/user/unsave",
+    saved:   api + "/user/saved",
   },
 }

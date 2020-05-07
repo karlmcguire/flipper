@@ -28,6 +28,27 @@ if((state.name == null || state.email == null)) {
   })
 }
 
+if(window.localStorage.getItem("saved") == null) {
+  fetch(Config.api.saved, {
+    method: "GET",
+    credentials: "include",
+  })
+  .then(res => res.json())
+  .then(res => {
+    if("err" in res) {
+      if(res.err != "invalid") console.error(res.err)
+      return
+    }
+    if("saved" in res) {
+      state.saved = new Map(res.saved.reduce((acc, cur) => {
+        acc.push([cur.item, cur.created]) 
+        return acc
+      }, []))
+      window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
+    }
+  })
+}
+
 export default {
   get name() { 
     return state.name
@@ -45,7 +66,7 @@ export default {
   },
   
   save: id => {
-    state.saved.set(id, true)
+    state.saved.set(id, Date.now() / 1000)
     window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
   },
   unsave: id => {
@@ -69,8 +90,7 @@ export default {
       }
     })
   },
-  
+  saved: state.saved,
   signedIn: () => state.email != null && state.name != null,
-  
-  saved: id => state.saved.has(id),
+  isSaved: id => state.saved.has(id),
 }

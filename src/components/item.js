@@ -5,10 +5,10 @@ export default () => {
   let saved = false
   return {
     oninit: (vnode) => {
-      saved = State.saved(vnode.attrs.id)
+      saved = State.isSaved(vnode.attrs.id)
     },
     onbeforeupdate: (vnode) => {
-      saved = State.saved(vnode.attrs.id)
+      saved = State.isSaved(vnode.attrs.id)
     },
     view: (vnode) => m(".column.is-one-quarter", m(".card", {
       style: `display:flex;flex-direction:column;height:100%;`,
@@ -92,7 +92,10 @@ export default () => {
             })
             .then(res => res.json())
             .then(res => {
-              console.log(res)
+              if("err" in res) {
+                console.error(err.stack)
+                return
+              }
             })
           },
         }, "Save" + (saved ? "d" : "")),

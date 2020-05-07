@@ -10,7 +10,7 @@ export default () => {
     oninit: (vnode) => {
       item = Items.get(vnode.attrs.id)
       window.scrollTo(0, 0)
-      saved = State.saved(vnode.attrs.id)
+      saved = State.isSaved(vnode.attrs.id)
     },
     view: (vnode) => m(".main", m(".container.section", [
       m(".columns", [
