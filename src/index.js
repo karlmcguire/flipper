@@ -33,6 +33,10 @@ api.get("/user/info", async (req, res) => {
   res.json(await state(model.user.info(action.user.info(req))))
 })
 
+api.get("/user/saved", async (req, res) => {
+  res.json(await state(model.user.saved(action.user.saved(req))))
+})
+
 api.post("/user/signup", async (req, res) => {
   res.json(await state(model.user.signup(action.user.signup(req))))
 })

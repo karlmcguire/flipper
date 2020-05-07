@@ -22,5 +22,8 @@ module.exports = {
       session: req.session,
       item: req.body.item,
     }),
+    saved: req => ({
+      session: req.session,
+    }),
   },
 }

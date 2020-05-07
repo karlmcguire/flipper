@@ -4,7 +4,7 @@ const db = require("./db/pool")
 const signedIn = session => session.uid != null
 
 const info = async user => {
-  if(!signedIn(user)) return {err: "invalid"}
+  if(!signedIn(user.session)) return {err: "invalid"}
   return user.session
 }
 
@@ -68,6 +68,20 @@ const unsave = async data => {
   }
 }
 
+const saved = async user => {
+  if(!signedIn(user.session)) return {err: "invalid"}
+  try {
+    const text = `SELECT item, 
+      extract(epoch from created) as created 
+      FROM saved WHERE "user" = $1`
+    const {rows} = await db.query(text, [user.session.uid])
+    return {saved: rows}
+  } catch(err) {
+    console.error(err.stack) 
+    return {err: "unknown"}
+  }
+}
+
 module.exports = {
   user: {
     info: info,
@@ -75,5 +89,6 @@ module.exports = {
     signin: signin,
     save: save,
     unsave: unsave,
+    saved: saved,
   },
 }
