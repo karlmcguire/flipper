@@ -7,7 +7,7 @@ import Home from "./pages/home"
 import About from "./pages/about"
 import Contact from "./pages/contact"
 import Signup from "./pages/signup"
-import Login from "./pages/login"
+import Signin from "./pages/signin"
 import View from "./pages/view"
 import Settings from "./pages/settings"
 import Saved from "./pages/saved"
@@ -33,9 +33,9 @@ m.route(document.body, "/", {
     m(Signup),
     m(Footer)
   ])},
-  "/login": {view: () => m(".layout", [
-    m(Navbar, {active: "login"}),
-    m(Login),
+  "/signin": {view: () => m(".layout", [
+    m(Navbar, {active: "signin"}),
+    m(Signin),
     m(Footer)
   ])},
   "/user/settings": {view: () => m(".layout", [

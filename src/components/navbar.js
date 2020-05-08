@@ -31,9 +31,9 @@ const signedOut = {
       href: "/#!/signup",
       }, m("strong", "Sign up")),
     m("a.button" +
-      (vnode.attrs.active == "login" ? ".is-active" : ""), {
-      href: "/#!/login",
-      }, "Log in")
+      (vnode.attrs.active == "signin" ? ".is-active" : ""), {
+      href: "/#!/signin",
+      }, "Sign in")
   ])))
 }
 
