@@ -1,7 +1,8 @@
+import Config from "../config"
+import State from "../state"
 import Items from "../model/items"
 import Price from "../components/price"
 import Details from "../components/details"
-import State from "../model/state"
 
 export default () => {
   let item = {}
@@ -10,7 +11,7 @@ export default () => {
     oninit: (vnode) => {
       item = Items.get(vnode.attrs.id)
       window.scrollTo(0, 0)
-      saved = State.isSaved(vnode.attrs.id)
+      saved = State.saved.has(vnode.attrs.id)
     },
     view: (vnode) => m(".main", m(".container.section", [
       m(".columns", [
@@ -34,15 +35,30 @@ export default () => {
               m(".level-right", [
                 m("a.button" + 
                   (saved ? ".is-danger" : ".is-link") +
-                  (State.signedIn() ? "" : ".is-hidden"), {
+                  (State.auth ? "" : ".is-hidden"), {
                   onclick: e => {
                     if(saved) {
-                      State.unsave(vnode.attrs.id)
+                      State.saved.delete(vnode.attrs.id)
                       saved = false
                     } else {
-                      State.save(vnode.attrs.id)
+                      State.saved.set(vnode.attrs.id, Date.now() / 1000)
                       saved = true
                     }
+                    window.localStorage.setItem("saved",
+                      JSON.stringify([...State.saved]))
+                    fetch((saved ? Config.api.save : Config.api.unsave), {
+                      method: "POST",
+                      credentials: "include",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        item: vnode.attrs.id,
+                      }),
+                    })
+                      .then(res => res.json())
+                      .then(res => {if("err" in res) console.error(res.err)})
+
                   },
                 }, (saved ? "Saved" : "Save"))
               ]),

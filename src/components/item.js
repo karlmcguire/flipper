@@ -1,19 +1,16 @@
 import Config from "../config"
-import State from "../model/state"
+import State from "../state"
 
 export default (vnode) => {
   return {
-    oninit: vnode => {
-      console.log(vnode.attrs.id, State.isSaved(vnode.attrs.id))
-    },
-    onbeforeupdate: vnode => {
-      console.log(vnode.attrs.id, State.isSaved(vnode.attrs.id))
-    },
-    view: (vnode) => m(".column.is-one-quarter", m(".card", {
+    view: vnode => m(".column.is-one-quarter", m(".card", {
       style: `display:flex;flex-direction:column;height:100%;`,
     }, [
       m("a.header.card-header", {
         href: "/#!/view/" + vnode.attrs.id,
+        onclick: () => {
+          console.log(State)
+        },
       },
         m("p.card-header-title", m("div", {style: `
           height: 3rem;
@@ -73,15 +70,18 @@ export default (vnode) => {
           href: "/#!/view/" + vnode.attrs.id,
         }, "View"),
         m("a.card-footer-item" + 
-          (State.isSaved(vnode.attrs.id) ? ".has-text-danger" : "") +
-          (State.signedIn() ? "" : ".is-hidden"), {
+          (State.saved.has(vnode.attrs.id) ? ".has-text-danger" : "") +
+          (State.auth ? "" : ".is-hidden"), {
           onclick: e => {
-            const saved = e.target.text == "Saved"
-            if(saved) State.unsave(vnode.attrs.id)
-            else State.save(vnode.attrs.id)
-            // TODO: figure out why the fuck this is needed, i do not like it
-            //m.redraw()
-            fetch((saved ? Config.api.save : Config.api.unsave), {
+            if(e.target.text == "Saved") {
+              State.saved.delete(vnode.attrs.id)
+            } else {
+              State.saved.set(vnode.attrs.id, Date.now() / 1000)
+            }
+            window.localStorage.setItem("saved", 
+              JSON.stringify([...State.saved]))
+            fetch((e.target.text == "Saved" ? 
+              Config.api.unsave : Config.api.save), {
               method: "POST",
               credentials: "include",
               headers: {
@@ -91,15 +91,10 @@ export default (vnode) => {
                 item: vnode.attrs.id,
               }),
             })
-            .then(res => res.json())
-            .then(res => {
-              if("err" in res) {
-                console.error(err.stack)
-                return
-              }
-            })
+              .then(res => res.json())
+              .then(res => {if("err" in res) console.error(res.err)})
           },
-        }, "Save" + (State.isSaved(vnode.attrs.id) ? "d" : "")),
+        }, "Save" + (State.saved.has(vnode.attrs.id) ? "d" : "")),
         m("a.card-footer-item", {
           target: "_",
           href: "https://amzn.com/" + vnode.attrs.id,

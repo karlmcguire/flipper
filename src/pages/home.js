@@ -1,7 +1,6 @@
 import Items from "../model/items"
 import Item from "../components/item"
-
-import State from "../model/state"
+import State from "../state"
 
 let items = Array.from(Items)
 

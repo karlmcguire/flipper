@@ -1,5 +1,8 @@
 "use strict"
 
+import State from "./state"
+import Init from "./init"
+
 import Navbar from "./components/navbar"
 import Footer from "./components/footer"
 
@@ -11,6 +14,8 @@ import Signin from "./pages/signin"
 import View from "./pages/view"
 import Settings from "./pages/settings"
 import Saved from "./pages/saved"
+
+Init(State)
 
 m.route(document.body, "/", {
   "/": {view: () => m(".layout", [

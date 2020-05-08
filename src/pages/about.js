@@ -5,41 +5,6 @@ const people = [
     handleUrl: "https://github.com/karlmcguire",
     img: "https://i.imgur.com/06B9Ajk.png",
     info: `Karl is the Team Lead and has a background in building high performance services at <a href="https://dgraph.io">Dgraph Labs</a>.`,
-  }, 
-  {
-    name: "Jordan Ramos",
-    handle: "username",
-    handleUrl: "#",
-    img: "https://i.imgur.com/wAgpEhJ.png",
-    info: "",
-  },
-  {
-    name: "Devan Nesbit",
-    handle: "username",
-    handleUrl: "#",
-    img: "https://i.imgur.com/wAgpEhJ.png",
-    info: "",
-  },
-  {
-    name: "Hyun Shik",
-    handle: "username",
-    handleUrl: "#",
-    img: "https://i.imgur.com/wAgpEhJ.png",
-    info: "",
-  },
-  {
-    name: "Isaac Damiani",
-    handle: "username",
-    handleUrl: "#",
-    img: "https://i.imgur.com/wAgpEhJ.png",
-    info: "",
-  },
-  {
-    name: "Tarun Ravada",
-    handle: "username",
-    handleUrl: "#",
-    img: "https://i.imgur.com/wAgpEhJ.png",
-    info: "",
   },
 ]
 

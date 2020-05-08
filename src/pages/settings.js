@@ -1,9 +1,9 @@
-import State from "../model/state"
+import State from "../state"
 
 export default () => {
   return {
     oninit: () => {
-      if(!State.signedIn()) m.route.set("/login")
+      if(!State.auth) m.route.set("/login")
     },
     view: () => m(".main", m(".container.section", [
       m("h1.title", "Settings"),
