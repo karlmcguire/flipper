@@ -3,6 +3,12 @@ import State from "../model/state"
 
 export default (vnode) => {
   return {
+    oninit: vnode => {
+      console.log(vnode.attrs.id, State.isSaved(vnode.attrs.id))
+    },
+    onbeforeupdate: vnode => {
+      console.log(vnode.attrs.id, State.isSaved(vnode.attrs.id))
+    },
     view: (vnode) => m(".column.is-one-quarter", m(".card", {
       style: `display:flex;flex-direction:column;height:100%;`,
     }, [

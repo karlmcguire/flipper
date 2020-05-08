@@ -4,7 +4,9 @@ import Config from "../config"
 const state = {
   name: window.localStorage.getItem("name"),
   email: window.localStorage.getItem("email"),
+  infoLoaded: false,
   saved: new Map(JSON.parse(window.localStorage.getItem("saved"))),
+  savedLoaded: false,
 }
 
 if((state.name == null || state.email == null)) {
@@ -20,12 +22,14 @@ if((state.name == null || state.email == null)) {
     }
     if("name" in res && "email" in res) {
       state.name = res.name
-      window.localStorage.setItem("name", state.name)
       state.email = res.email
+      state.infoLoaded = true 
+      window.localStorage.setItem("name", state.name)
       window.localStorage.setItem("email", state.email)
-      m.redraw() 
     }
   })
+} else {
+  state.savedInfo = true
 }
 
 if(window.localStorage.getItem("saved") == null) {
@@ -44,9 +48,12 @@ if(window.localStorage.getItem("saved") == null) {
         acc.push([cur.item, cur.created]) 
         return acc
       }, []))
+      state.savedLoaded = true
       window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
     }
   })
+} else {
+  state.savedLoaded = true
 }
 
 export default {
@@ -64,6 +71,9 @@ export default {
     state.email = email
     window.localStorage.setItem("email", email)
   },
+  
+  savedInfo: state.savedInfo,
+  savedLoaded: state.savedLoaded,
   
   save: id => {
     state.saved.set(id, Date.now() / 1000)
