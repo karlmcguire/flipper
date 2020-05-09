@@ -1,6 +1,7 @@
 import Cookie from "./cookie"
 import Config from "./config"
 import State from "./state"
+import Util from "./util"
 
 const getInfo = state => {
   m.request({
@@ -8,15 +9,8 @@ const getInfo = state => {
     url: Config.api.info,
     withCredentials: true,
   }).then(res => {
-      if("err" in res) {
-        if(res.err != "invalid") console.error(res.err)
-        return
-      }
-      state.name = res.name
-      state.email = res.email
-      window.localStorage.setItem("name", state.name)
-      window.localStorage.setItem("email", state.email)
-      state.auth = true
+      if("err" in res) { if(res.err != "invalid") console.error(res.err) }
+      else Util.user.signIn(res)
     })
 }
 
@@ -26,16 +20,8 @@ const getSaved = state => {
     url: Config.api.saved,
     withCredentials: true,
   }).then(res => {
-      if("err" in res) {
-        if(res.err != "invalid") console.error(res.err)
-        return
-      }
-      const saved = res.saved.reduce((acc, cur) => {
-        acc.push([cur.item, cur.created])
-        return acc
-      }, [])
-      window.localStorage.setItem("saved", JSON.stringify([...state.saved]))
-      state.saved = new Map(saved)
+      if("err" in res) { if(res.err != "invalid") console.error(res.err) }
+      else Util.user.setSaved(res.saved)
     })
 }
 
@@ -44,6 +30,9 @@ export default state => {
   state.email = window.localStorage.getItem("email")
   state.saved = new Map(JSON.parse(window.localStorage.getItem("saved")))
   state.auth = ((state.name != null && state.email != null) ? true : false)
+
+  if(document.cookie.indexOf(Config.session.cookie) < 0)
+    return
 
   if(state.name == null || state.email == null)
     getInfo(state)

@@ -1,6 +1,6 @@
 import Config from "../config"
 import Cookie from "../cookie"
-import State from "../model/state"
+import State from "../state"
 
 export default () => {
   let data = {
@@ -20,7 +20,7 @@ export default () => {
   let errMsg = ""
   return {
     oninit: () => {
-      if(State.signedIn()) m.route.set("/")
+      if(State.auth) m.route.set("/")
     },
     view: (vnode) => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),

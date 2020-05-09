@@ -1,5 +1,6 @@
 import Config from "../config"
-import State from "../model/state"
+import State from "../state"
+import Util from "../util"
 
 export default () => {
   let data = {
@@ -14,7 +15,7 @@ export default () => {
   let errMsg = "" 
   return {
     oninit: () => {
-      if(State.signedIn()) m.route.set("/")
+      if(State.auth) m.route.set("/")
     }, 
     view: (vnode) => m(".main", m(".container.section", m(".columns", [
       m(".column.is-one-quarter"),
@@ -95,8 +96,8 @@ export default () => {
                       m.redraw()
                       return
                     }
-                    State.name = res.name
-                    State.email = res.email
+                    Util.user.signIn(res)
+                    Util.user.setSaved(res.saved)
                     m.route.set("/")
                   })
                 },

@@ -1,4 +1,5 @@
 import State from "../state"
+import Util from "../util"
 
 const signedIn = {
   view: (vnode) => m(".navbar-end", [
@@ -15,10 +16,10 @@ const signedIn = {
         }, "Settings"),
         m("a.navbar-item.has-text-danger", {
           onclick: () => {
-            //State.signOut()
+            Util.user.signOut() 
             m.route.set("/")
           }
-        }, "Log out"),
+        }, "Sign out"),
       ])
     ])
   ])
@@ -72,7 +73,7 @@ export default () => {
               href: "/#!/contact",
             }, "Contact"), 
           ]),
-          m((State.name != null ? signedIn : signedOut), vnode.attrs), 
+          m((State.auth ? signedIn : signedOut), vnode.attrs), 
         ]),
       ]),
     ])
