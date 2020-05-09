@@ -13,9 +13,9 @@ const signup = async user => {
   const hash = await bcrypt.hash(user.password, 10)
   delete user.password
   try {
-    const text = `INSERT INTO users (name, email, hash) VALUES ($1, $2, $3)
+    let text = `INSERT INTO users (name, email, hash) VALUES ($1, $2, $3)
       RETURNING id`
-    const {rows} = await db.query(text, [user.name, user.email, hash])
+    let {rows} = await db.query(text, [user.name, user.email, hash])
     user.session.uid = rows[0].id
     user.session.name = user.name
     user.session.email = user.email
@@ -27,20 +27,36 @@ const signup = async user => {
 
 const signin = async user => {
   if(signedIn(user.session)) return user.session
+  const client = await db.connect()
   try {
-    const text = `SELECT id, name, hash FROM users WHERE email = $1`
-    const {rows} = await db.query(text, [user.email])
-    const good = await bcrypt.compare(user.password, rows[0].hash)
-    if(good) {
-      user.session.uid = rows[0].id
-      user.session.name = rows[0].name
-      user.session.email = user.email
-      return user.session
-    } else {
+    await client.query("BEGIN")
+    const getInfo = `SELECT id, name, hash FROM users WHERE email = $1`
+    const info = await client.query(getInfo, [user.email])
+    const good = await bcrypt.compare(user.password, info.rows[0].hash)
+    if(!good) {
+      await client.query("ROLLBACK")
       return {err: "invalid"}
     }
+    user.session.uid = info.rows[0].id
+    user.session.name = info.rows[0].name
+    user.session.email = user.email
+    const getSaved = `SELECT item, 
+      extract(epoch from created) as created 
+      FROM saved WHERE "user" = $1`
+    const saved = await client.query(getSaved, [user.session.uid])
+    await client.query("COMMIT")
+    return {
+      uid: user.session.uid, 
+      name: user.session.name,
+      email: user.session.email,
+      saved: saved.rows,
+    }
   } catch(err) {
+    console.error(err.stack)
+    await client.query("ROLLBACK")
     return {err: "unknown"}
+  } finally {
+    client.release()
   }
 }
 
