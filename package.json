@@ -1,24 +1,22 @@
 {
   "name": "flipper",
   "version": "1.0.0",
-  "description": "flipper.deals frontend",
+  "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "rm -f ./docs/* && echo 'flipper.deals' > ./docs/CNAME && parcel build --no-source-maps ./src/index.html -d ./docs/",
-    "serve": "rm -f ./tmp/* && parcel serve -d ./tmp/ ./src/index.html"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/karlmcguire/flipper.git"
   },
-  "author": "Karl McGuire",
+  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/karlmcguire/flipper/issues"
   },
   "homepage": "https://github.com/karlmcguire/flipper#readme",
-  "devDependencies": {
-    "cssnano": "^4.1.10"
-  },
-  "dependencies": {}
+  "dependencies": {
+    "node-telegram-bot-api": "^0.40.0"
+  }
 }
