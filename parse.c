@@ -1,8 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-
-#define PNG_DEBUG 3
 #include<png.h>
 
 void
@@ -14,7 +12,9 @@ stop(const char *s) {
 
 int
 main(int argc, char **argv) {
-    FILE *fp = fopen("chart.png", "rb");
+    if(argc != 2) stop("usage: parse <filename>");
+
+    FILE *fp = fopen(argv[1], "rb");
     if(!fp) stop("error opening file");
 
     char header[8];
@@ -41,7 +41,6 @@ main(int argc, char **argv) {
     int number_of_passes = png_set_interlace_handling(png_ptr);
     png_read_update_info(png_ptr, info_ptr);
 
-    // read file
     if(setjmp(png_jmpbuf(png_ptr))) stop("error during read_image");
 
     png_bytep *rows = (png_bytep *) malloc(sizeof(png_bytep) * height);
